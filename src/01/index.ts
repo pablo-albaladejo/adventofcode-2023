@@ -14,6 +14,6 @@ export const calibrationValue = (line: string): number => {
   return concatenateDigits(digitsStr[0], digitsStr[digitsStr.length - 1]);
 };
 
-export const solution = (lines: string[]): number => {
+export const solutionP1 = (lines: string[]): number => {
   return lines.reduce((acc, line) => acc + calibrationValue(line), 0);
 };

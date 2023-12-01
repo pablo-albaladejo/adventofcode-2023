@@ -1,5 +1,5 @@
 import { readLinesFromTextFile } from '../helpers';
-import { calibrationValue, findDigitsInString, solution } from '.';
+import { calibrationValue, findDigitsInString, solutionP1 } from '.';
 import path from 'path';
 
 describe('findDigitsInString', () => {
@@ -57,14 +57,14 @@ describe('calibrationValue', () => {
 
 describe('solution', () => {
   it('calculates the example solution', () => {
-    const filePath = path.join(__dirname, './fixtures/example.txt');
+    const filePath = path.join(__dirname, './fixtures/p1/example.txt');
     const input = readLinesFromTextFile(filePath);
-    expect(solution(input)).toBe(142);
+    expect(solutionP1(input)).toBe(142);
   });
 
   it('calculates the input solution', () => {
-    const filePath = path.join(__dirname, './fixtures/p1.txt');
+    const filePath = path.join(__dirname, './fixtures/p1/input.txt');
     const input = readLinesFromTextFile(filePath);
-    expect(solution(input)).toBe(54667);
+    expect(solutionP1(input)).toBe(54667);
   });
 });
