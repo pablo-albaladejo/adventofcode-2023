@@ -1,4 +1,4 @@
-import { findNumbersInString } from './01-p1';
+import { findNumbersInString, findNumbersInStringAsNumber } from './01-p1';
 
 describe('findNumbersInString', () => {
   it('returns an empty array for an empty string', () => {
@@ -20,5 +20,10 @@ describe('findNumbersInString', () => {
   it('returns multiple item array for multiple numbers string', () => {
     expect(findNumbersInString('abc123def456hij')).toEqual(['123', '456']);
   });
+});
 
+describe('findNumbersInStringAsInt', () => {
+  it('returns multiple item array for multiple numbers string', () => {
+    expect(findNumbersInStringAsNumber('abc123def456hij')).toEqual([123, 456]);
+  });
 });
