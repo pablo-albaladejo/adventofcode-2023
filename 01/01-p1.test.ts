@@ -1,4 +1,8 @@
-import { findNumbersInString, findNumbersInStringAsNumber } from './01-p1';
+import {
+  calibrationValue,
+  findNumbersInString,
+  findNumbersInStringAsNumber,
+} from './01-p1';
 
 describe('findNumbersInString', () => {
   it('returns an empty array for an empty string', () => {
@@ -25,5 +29,36 @@ describe('findNumbersInString', () => {
 describe('findNumbersInStringAsInt', () => {
   it('returns multiple item array for multiple numbers string', () => {
     expect(findNumbersInStringAsNumber('abc123def456hij')).toEqual([123, 456]);
+  });
+});
+
+describe('findNumbersInStringAsInt', () => {
+  it('returns multiple item array for multiple numbers string', () => {
+    expect(findNumbersInStringAsNumber('abc123def456hij')).toEqual([123, 456]);
+  });
+});
+
+describe('calibrationValue', () => {
+  it('returns 0 for empty string', () => {
+    expect(calibrationValue('')).toEqual(0);
+  });
+
+  it('returns 0 for a line with no numbers', () => {
+    expect(calibrationValue('abcdef')).toEqual(0);
+  });
+
+  it('returns the number for a line with only a number', () => {
+    expect(calibrationValue('abc123def')).toEqual(123123);
+  });
+
+  it('returns the concatenation of two numbers when it exists', () => {
+    expect(calibrationValue('abc123def456ghi')).toEqual(123456);
+  });
+
+  it('calculates calibration value correctly', () => {
+    expect(calibrationValue('1abc2')).toBe(12);
+    expect(calibrationValue('pqr3stu8vwx')).toBe(38);
+    expect(calibrationValue('a1b2c3d4e5f')).toBe(15);
+    expect(calibrationValue('treb7uchet')).toBe(77);
   });
 });
