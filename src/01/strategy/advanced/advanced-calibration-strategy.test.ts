@@ -1,25 +1,33 @@
 import { AdvancedCalibrationStrategy } from './advanced-calibration-strategy';
 
 describe('Simple Calibration Strategy', () => {
-  const simpleCalibrationStrategy = new AdvancedCalibrationStrategy();
-  it('returns an empty string for an empty string', () => {
-    expect(simpleCalibrationStrategy.transformLine('')).toEqual('');
+  const advancedCalibrationStrategy = new AdvancedCalibrationStrategy();
+  it('converts one string number into one digit', () => {
+    expect(advancedCalibrationStrategy.transformLine('one')).toEqual('1');
+    expect(advancedCalibrationStrategy.transformLine('two')).toEqual('2');
+    expect(advancedCalibrationStrategy.transformLine('three')).toEqual('3');
+    expect(advancedCalibrationStrategy.transformLine('four')).toEqual('4');
+    expect(advancedCalibrationStrategy.transformLine('five')).toEqual('5');
+    expect(advancedCalibrationStrategy.transformLine('six')).toEqual('6');
+    expect(advancedCalibrationStrategy.transformLine('seven')).toEqual('7');
+    expect(advancedCalibrationStrategy.transformLine('eight')).toEqual('8');
+    expect(advancedCalibrationStrategy.transformLine('nine')).toEqual('9');
   });
 
-  it('returns an empty string for an chars only string', () => {
-    expect(simpleCalibrationStrategy.transformLine('abcdef')).toEqual('');
+  it('works with complex numbers', () => {
+    expect(advancedCalibrationStrategy.transformLine('oneone')).toEqual('11');
+    expect(advancedCalibrationStrategy.transformLine('seventeen')).toEqual('7');
+    expect(advancedCalibrationStrategy.transformLine('ninetytwo')).toEqual(
+      '92'
+    );
   });
 
-  it('returns one number string for a one number string', () => {
-    expect(simpleCalibrationStrategy.transformLine('123')).toEqual('123');
+  it('works with overlapping numbers', () => {
+    expect(advancedCalibrationStrategy.transformLine('twone')).toEqual('21');
+    expect(advancedCalibrationStrategy.transformLine('threeight')).toEqual(
+      '38'
+    );
+    expect(advancedCalibrationStrategy.transformLine('eightwo')).toEqual('82');
+    expect(advancedCalibrationStrategy.transformLine('nineight')).toEqual('98');
   });
-
-  it('returns one number string for a one number string wrapper by chars', () => {
-    expect(simpleCalibrationStrategy.transformLine('abc123def')).toEqual('123');
-  });
-
-  it('returns concatenated digits for multiple numbers string', () => {
-    expect(simpleCalibrationStrategy.transformLine('abc123def456hij')).toEqual('123456');
-  });
-  
 });

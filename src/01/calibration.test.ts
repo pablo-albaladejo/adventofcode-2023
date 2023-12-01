@@ -120,6 +120,6 @@ describe('Advanced Calibration', () => {
   it('calculates the input solution', () => {
     const filePath = path.join(__dirname, './fixtures/advanced/input.txt');
     const input = readLinesFromTextFile(filePath);
-    expect(advancedCalibration.solution(input)).toBe(54185);
+    expect(advancedCalibration.solution(input)).toBe(54203);
   });
 });
