@@ -19,3 +19,8 @@ export const calibrationValue = (line: string): number => {
     return concatenateNumbers(numbersArr[0], numbersArr[0]);
   return concatenateNumbers(numbersArr[0], numbersArr[numbersArr.length - 1]);
 };
+
+
+export const solution = (lines: string[]): number => {
+  return lines.reduce((acc, line) => acc + calibrationValue(line), 0);
+}

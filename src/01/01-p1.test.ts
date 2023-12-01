@@ -1,8 +1,11 @@
+import { readLinesFromTextFile } from '../helpers';
 import {
   calibrationValue,
   findNumbersInString,
   findNumbersInStringAsNumber,
+  solution,
 } from './01-p1';
+import path from 'path';
 
 describe('findNumbersInString', () => {
   it('returns an empty array for an empty string', () => {
@@ -60,5 +63,13 @@ describe('calibrationValue', () => {
     expect(calibrationValue('pqr3stu8vwx')).toBe(38);
     expect(calibrationValue('a1b2c3d4e5f')).toBe(15);
     expect(calibrationValue('treb7uchet')).toBe(77);
+  });
+});
+
+describe('solution', () => {
+  it('calculates the example solution', () => {
+    const filePath = path.join(__dirname, './assets/example.txt');
+    const input = readLinesFromTextFile(filePath);
+    expect(solution(input)).toBe(142);
   });
 });
