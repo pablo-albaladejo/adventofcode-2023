@@ -1,26 +1,19 @@
-export const findNumbersInString = (line: string): string[] => {
-  const numbersInLine: string[] | null = line.match(/\d+/g);
-  return numbersInLine || [];
+export const findDigitsInString = (line: string): string => {
+  return line.replace(/\D/g, '');
 };
 
-export const findNumbersInStringAsNumber = (line: string): number[] => {
-  const numbersInLine: string[] = findNumbersInString(line);
-  return numbersInLine.map(Number);
-};
-
-const concatenateNumbers = (a: number, b: number): number => {
+const concatenateDigits = (a: string, b: string): number => {
   return Number(`${a}${b}`);
 };
 
 export const calibrationValue = (line: string): number => {
-  const numbersArr: number[] = findNumbersInStringAsNumber(line);
-  if (numbersArr.length === 0) return 0;
-  if (numbersArr.length === 1)
-    return concatenateNumbers(numbersArr[0], numbersArr[0]);
-  return concatenateNumbers(numbersArr[0], numbersArr[numbersArr.length - 1]);
+  const digitsStr: string[] = findDigitsInString(line).split('');
+  if (digitsStr.length === 0) return 0;
+  if (digitsStr.length === 1)
+    return concatenateDigits(digitsStr[0], digitsStr[0]);
+  return concatenateDigits(digitsStr[0], digitsStr[digitsStr.length - 1]);
 };
-
 
 export const solution = (lines: string[]): number => {
   return lines.reduce((acc, line) => acc + calibrationValue(line), 0);
-}
+};
