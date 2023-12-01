@@ -1,22 +1,9 @@
 import { readLinesFromTextFile } from '../helpers';
 
 import path from 'path';
-import { Calibration, digitsCalibrationValue } from './calibration';
+import { Calibration } from './calibration';
 import { SimpleCalibrationStrategy } from './strategy/simple/simple-calibration-strategy';
-
-describe('digitsCalibrationValue', () => {
-  it('returns 0 for empty string', () => {
-    expect(digitsCalibrationValue('')).toEqual(0);
-  });
-
-  it('returns the digit twice if only one digit is provided', () => {
-    expect(digitsCalibrationValue('1')).toEqual(11);
-  });
-
-  it('returns first and last digit as number', () => {
-    expect(digitsCalibrationValue('123456789')).toEqual(19);
-  });
-});
+import { AdvancedCalibrationStrategy } from './strategy/advanced/advanced-calibration-strategy';
 
 describe('Simple Calibration', () => {
   const simpleCalibration = new Calibration(new SimpleCalibrationStrategy());
@@ -65,14 +52,74 @@ describe('Simple Calibration', () => {
   });
 
   it('calculates the example solution', () => {
-    const filePath = path.join(__dirname, './fixtures/p1/example.txt');
+    const filePath = path.join(__dirname, './fixtures/simple/example.txt');
     const input = readLinesFromTextFile(filePath);
     expect(simpleCalibration.solution(input)).toBe(142);
   });
 
   it('calculates the input solution', () => {
-    const filePath = path.join(__dirname, './fixtures/p1/input.txt');
+    const filePath = path.join(__dirname, './fixtures/simple/input.txt');
     const input = readLinesFromTextFile(filePath);
     expect(simpleCalibration.solution(input)).toBe(54667);
+  });
+});
+
+describe('Advanced Calibration', () => {
+  const advancedCalibration = new Calibration(
+    new AdvancedCalibrationStrategy()
+  );
+
+  describe('calibrationValue', () => {
+    it('returns 0 for empty string', () => {
+      expect(advancedCalibration.lineCalibrationValue('')).toEqual(0);
+    });
+
+    it('returns 0 for a line with no numbers', () => {
+      expect(advancedCalibration.lineCalibrationValue('abcdef')).toEqual(0);
+    });
+
+    it('returns the number for a line with only a number', () => {
+      expect(advancedCalibration.lineCalibrationValue('abc123def')).toEqual(13);
+    });
+
+    it('returns the concatenation of two numbers when it exists', () => {
+      expect(
+        advancedCalibration.lineCalibrationValue('abc123def456ghi')
+      ).toEqual(16);
+    });
+
+    it('returns the concatenation of two numbers when it exists as string', () => {
+      expect(
+        advancedCalibration.lineCalibrationValue('abctwodef123ghi456jkl')
+      ).toEqual(26);
+    });
+
+    it('calculates calibration value correctly', () => {
+      expect(advancedCalibration.lineCalibrationValue('two1nine')).toBe(29);
+      expect(advancedCalibration.lineCalibrationValue('eightwothree')).toBe(83);
+      expect(advancedCalibration.lineCalibrationValue('abcone2threexyz')).toBe(
+        13
+      );
+      expect(advancedCalibration.lineCalibrationValue('xtwone3four')).toBe(24);
+      expect(advancedCalibration.lineCalibrationValue('4nineeightseven2')).toBe(
+        42
+      );
+      expect(advancedCalibration.lineCalibrationValue('zoneight234')).toBe(14);
+      expect(advancedCalibration.lineCalibrationValue('7pqrstsixteen')).toBe(
+        76
+      );
+    });
+  });
+
+  it('calculates the example solution', () => {
+    const filePath = path.join(__dirname, './fixtures/advanced/example.txt');
+    const input = readLinesFromTextFile(filePath);
+    expect(advancedCalibration.solution(input)).toBe(281);
+  });
+
+  it('calculates the input solution', () => {
+    const filePath = path.join(__dirname, './fixtures/advanced/input.txt');
+    const input = readLinesFromTextFile(filePath);
+    expect(advancedCalibration.solution(input)).toBe(54185);
   });
 });

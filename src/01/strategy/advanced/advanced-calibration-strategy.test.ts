@@ -1,7 +1,7 @@
-import { SimpleCalibrationStrategy } from './simple-calibration-strategy';
+import { AdvancedCalibrationStrategy } from './advanced-calibration-strategy';
 
 describe('Simple Calibration Strategy', () => {
-  const simpleCalibrationStrategy = new SimpleCalibrationStrategy();
+  const simpleCalibrationStrategy = new AdvancedCalibrationStrategy();
   it('returns an empty string for an empty string', () => {
     expect(simpleCalibrationStrategy.transformLine('')).toEqual('');
   });
@@ -21,4 +21,5 @@ describe('Simple Calibration Strategy', () => {
   it('returns concatenated digits for multiple numbers string', () => {
     expect(simpleCalibrationStrategy.transformLine('abc123def456hij')).toEqual('123456');
   });
+  
 });

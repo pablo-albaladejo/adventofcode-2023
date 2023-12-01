@@ -1,3 +1,3 @@
 export interface CalibrationStrategy {
-  findDigitsInString(line: string): string
+  transformLine(line: string): string
 }

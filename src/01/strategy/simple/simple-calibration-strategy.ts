@@ -1,7 +1,8 @@
+import { filterNonDigitsInString } from '../../common/string';
 import { CalibrationStrategy } from '../calibration-strategy.interface';
 
 export class SimpleCalibrationStrategy implements CalibrationStrategy {
-  findDigitsInString(line: string): string {
-    return line.replace(/\D/g, '');
+  transformLine(line: string): string {
+    return filterNonDigitsInString(line);
   }
 }
