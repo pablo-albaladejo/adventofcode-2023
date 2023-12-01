@@ -4,7 +4,7 @@ import {
   findNumbersInString,
   findNumbersInStringAsNumber,
   solution,
-} from './01-p1';
+} from '.';
 import path from 'path';
 
 describe('findNumbersInString', () => {
@@ -63,13 +63,26 @@ describe('calibrationValue', () => {
     expect(calibrationValue('pqr3stu8vwx')).toBe(38);
     expect(calibrationValue('a1b2c3d4e5f')).toBe(15);
     expect(calibrationValue('treb7uchet')).toBe(77);
+
+    expect(calibrationValue('khgdlljfjxt6sevenfour35pxone')).toBe(635);
+    expect(calibrationValue('nine8msxvtnkzqhhnj128')).toBe(8128);
+    expect(calibrationValue('ntlznczfone7ninesixxtxbkvpkonebmbc')).toBe(77);
+    expect(calibrationValue('3776')).toBe(37763776);    
+    expect(calibrationValue('qpj44nine3three5')).toBe(445); 
+    
   });
 });
 
 describe('solution', () => {
   it('calculates the example solution', () => {
-    const filePath = path.join(__dirname, './assets/example.txt');
+    const filePath = path.join(__dirname, './fixtures/example.txt');
     const input = readLinesFromTextFile(filePath);
     expect(solution(input)).toBe(142);
+  });
+
+  it('calculates the input solution', () => {
+    const filePath = path.join(__dirname, './fixtures/p1.txt');
+    const input = readLinesFromTextFile(filePath);
+    expect(solution(input)).toBe(6382208957);
   });
 });
