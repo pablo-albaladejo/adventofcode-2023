@@ -32,3 +32,22 @@ export class Game {
     return this.sets.every((set) => set.isPossible(constrain));
   }
 }
+
+export class CubeConundrum {
+  games: Game[];
+  constrain: Cubes;
+
+  constructor(games: Game[], constrain: Cubes) {
+    this.games = games;
+    this.constrain = constrain;
+  }
+
+  solution(): number {
+    console.log(this.games);
+    return this.games.reduce(
+      (acc, game, index) =>
+        game.isPossible(this.constrain) ? acc + index + 1 : acc,
+      0
+    );
+  }
+}
