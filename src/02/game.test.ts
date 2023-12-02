@@ -1,6 +1,7 @@
 import { loadGames } from './common/file';
 import { CubeConundrum, Cubes, Game, GameSet } from './game';
 import path from 'path';
+import { SimpleCubesStrategy } from './statregy/simple/simple-cubes-strategy';
 
 describe('Cube Conundrum', () => {
   const constrain: Cubes = new Cubes(12, 13, 14);
@@ -25,6 +26,9 @@ describe('Cube Conundrum', () => {
     new GameSet(14, 3, 15),
   ]);
   const game5 = new Game([new GameSet(6, 3, 1), new GameSet(1, 2, 2)]);
+
+  const simpleCubesStrategy = new SimpleCubesStrategy();
+
   describe('Possible games', () => {
     test('Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green', () => {
       expect(game1.isPossible(constrain)).toBe(true);
@@ -46,23 +50,28 @@ describe('Cube Conundrum', () => {
     });
   });
 
-  describe('Solution', () => {
+  describe('Simple Solution', () => {
     it('calculates the example solution', () => {
       const cubeConundrum = new CubeConundrum(
         [game1, game2, game3, game4, game5],
-        constrain
+        constrain,
+        simpleCubesStrategy
       );
 
       expect(cubeConundrum.solution()).toBe(8);
     });
   });
 
-  describe('Solution from file', () => {
+  describe('Simple Solution from file', () => {
     test('Example solution', () => {
       const filePath: string = path.join(__dirname, './fixtures/example.txt');
       const games = loadGames(filePath);
 
-      const cubeConundrum = new CubeConundrum(games, constrain);
+      const cubeConundrum = new CubeConundrum(
+        games,
+        constrain,
+        simpleCubesStrategy
+      );
 
       expect(cubeConundrum.solution()).toBe(8);
     });
@@ -71,7 +80,11 @@ describe('Cube Conundrum', () => {
       const filePath: string = path.join(__dirname, './fixtures/input.txt');
       const games = loadGames(filePath);
 
-      const cubeConundrum = new CubeConundrum(games, constrain);
+      const cubeConundrum = new CubeConundrum(
+        games,
+        constrain,
+        simpleCubesStrategy
+      );
 
       expect(cubeConundrum.solution()).toBe(1853);
     });

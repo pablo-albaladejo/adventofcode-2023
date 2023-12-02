@@ -1,3 +1,5 @@
+import { CubesStrategy } from './statregy/cubes-strategy.interface';
+
 export class Cubes {
   red: number;
   green: number;
@@ -36,17 +38,15 @@ export class Game {
 export class CubeConundrum {
   games: Game[];
   constrain: Cubes;
+  strategy: CubesStrategy;
 
-  constructor(games: Game[], constrain: Cubes) {
+  constructor(games: Game[], constrain: Cubes, strategy: CubesStrategy) {
     this.games = games;
     this.constrain = constrain;
+    this.strategy = strategy;
   }
 
   solution(): number {
-    return this.games.reduce(
-      (acc, game, index) =>
-        game.isPossible(this.constrain) ? acc + index + 1 : acc,
-      0
-    );
+    return this.strategy.solution(this.games, this.constrain);
   }
 }
