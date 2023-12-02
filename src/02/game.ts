@@ -43,7 +43,6 @@ export class CubeConundrum {
   }
 
   solution(): number {
-    console.log(this.games);
     return this.games.reduce(
       (acc, game, index) =>
         game.isPossible(this.constrain) ? acc + index + 1 : acc,

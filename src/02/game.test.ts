@@ -1,4 +1,6 @@
+import { loadGames } from './common/file';
 import { CubeConundrum, Cubes, Game, GameSet } from './game';
+import path from 'path';
 
 describe('Cube Conundrum', () => {
   const constrain: Cubes = new Cubes(12, 13, 14);
@@ -52,6 +54,26 @@ describe('Cube Conundrum', () => {
       );
 
       expect(cubeConundrum.solution()).toBe(8);
+    });
+  });
+
+  describe('Solution from file', () => {
+    test('Example solution', () => {
+      const filePath: string = path.join(__dirname, './fixtures/example.txt');
+      const games = loadGames(filePath);
+
+      const cubeConundrum = new CubeConundrum(games, constrain);
+
+      expect(cubeConundrum.solution()).toBe(8);
+    });
+
+    test('Test solution', () => {
+      const filePath: string = path.join(__dirname, './fixtures/input.txt');
+      const games = loadGames(filePath);
+
+      const cubeConundrum = new CubeConundrum(games, constrain);
+
+      expect(cubeConundrum.solution()).toBe(1853);
     });
   });
 });
