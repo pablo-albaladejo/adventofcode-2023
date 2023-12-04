@@ -1,4 +1,4 @@
-import { Card } from '../scratchcards';
+import { Card } from '../card';
 import { lineToCard, loadCards } from './file';
 
 const card1 = new Card([41, 48, 83, 86, 17], [83, 86, 6, 31, 17, 9, 48, 53]);

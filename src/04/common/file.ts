@@ -1,5 +1,5 @@
 import { readLinesFromTextFile } from '../../helpers';
-import { Card } from '../scratchcards';
+import { Card } from '../card';
 
 const parseValues = (str: string): number[] => {
   return str.trim().split(/\s+/).map(Number);
