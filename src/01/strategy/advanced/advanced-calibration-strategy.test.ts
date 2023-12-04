@@ -1,6 +1,6 @@
 import { AdvancedCalibrationStrategy } from './advanced-calibration-strategy';
 
-describe('Simple Calibration Strategy', () => {
+describe('Advanced Calibration Strategy', () => {
   const advancedCalibrationStrategy = new AdvancedCalibrationStrategy();
   it('converts one string number into one digit', () => {
     expect(advancedCalibrationStrategy.transformLine('one')).toEqual('1');
