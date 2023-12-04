@@ -1,5 +1,4 @@
 import { Card } from '../../card';
-import path from 'path';
 import { loadCards } from '../../common/file';
 import { SimpleStrategy } from './simple-strategy';
 

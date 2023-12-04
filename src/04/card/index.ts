@@ -1,7 +1,7 @@
 export class Card {
   winning: number[];
   numbers: number[];
-  copies: number = 0;
+  copies: number = 1;
 
   constructor(winning: number[], numbers: number[]) {
     this.winning = winning;
@@ -19,8 +19,8 @@ export class Card {
     return this.copies;
   }
 
-  addCopy(): number {
-    this.copies++
+  addCopy(amount: number = 1): number {
+    this.copies += amount;
     return this.copies;
   }
 }

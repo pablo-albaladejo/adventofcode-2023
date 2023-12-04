@@ -16,12 +16,13 @@ describe('Card', () => {
   describe('copies', () => {
     const card = new Card([], []);
     test('getCopies', () => {
-      expect(card.getCopies()).toEqual(0);
-    })
+      expect(card.getCopies()).toEqual(1);
+    });
 
     test('addCopy', () => {
-      expect(card.addCopy()).toEqual(1);
-    })
-
+      expect(card.addCopy()).toEqual(2);
+      expect(card.addCopy()).toEqual(3);
+      expect(card.addCopy(2)).toEqual(5);
+    });
   });
 });
