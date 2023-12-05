@@ -1,16 +1,30 @@
-import { lineToPart, loadParts } from '.';
+import { AlmanacMap, loadParts } from '.';
 import path from 'path';
-import { Part } from '../part';
-
-const part1 = new Part();
+import SeedMapKey from '../seeds/seed-map-key.enum';
+import { SeedMap, SeedMapRange } from '../seeds/seed-maps';
 
 describe('file', () => {
-  test('lineToPart', () => {
-    expect(lineToPart('')).toEqual(part1);
+  const example: AlmanacMap = loadParts(
+    path.join(__dirname, '../fixtures/example.txt')
+  );
+
+  test('seeds', () => {
+    expect(example.seeds).toEqual([79, 14, 55, 13]);
   });
-  test('loadParts', () => {
-    expect(loadParts(path.join(__dirname, '../fixtures/example.txt'))).toEqual(
-      []
+
+  test('SEED_TO_SOIL', () => {
+    expect(example.seedMaps[SeedMapKey.SEED_TO_SOIL]).toStrictEqual(
+      new SeedMap([new SeedMapRange(50, 98, 2), new SeedMapRange(52, 50, 48)])
+    );
+  });
+
+  test('SOIL_TO_FERTILIZER', () => {
+    expect(example.seedMaps[SeedMapKey.SOIL_TO_FERTILIZER]).toStrictEqual(
+      new SeedMap([
+        new SeedMapRange(0, 15, 37),
+        new SeedMapRange(37, 52, 2),
+        new SeedMapRange(39, 0, 15),
+      ])
     );
   });
 });
