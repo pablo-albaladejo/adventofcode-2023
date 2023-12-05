@@ -1,39 +1,38 @@
 import path from 'path';
 import { SimpleStrategy } from './strategy/simple/simple-strategy';
 import { AdvancedStrategy } from './strategy/advanced/advanced-strategy';
-import { loadParts } from './file';
-import { Part } from './part';
-import { Challenge } from './challenge';
+import { AlmanacMap, loadParts } from './file';
+import { Almanac } from './almanac';
 
-const example: Part[] = loadParts(
+const example: AlmanacMap = loadParts(
   path.join(__dirname, './fixtures/example.txt')
 );
-const input: Part[] = loadParts(path.join(__dirname, './fixtures/input.txt'));
+const input: AlmanacMap = loadParts(path.join(__dirname, './fixtures/input.txt'));
 
 const simpleStrategy = new SimpleStrategy();
 const advancedStrategy = new AdvancedStrategy();
 
-describe('Challenge', () => {
+describe('Almanac', () => {
   describe('Simple Strategy', () => {
     test('Example solution', () => {
-      const challenge = new Challenge(example, simpleStrategy);
-      expect(challenge.solve());
+      const challenge = new Almanac(example, simpleStrategy);
+      expect(challenge.solve()).toBe(35);
     });
 
     test('Input solution', () => {
-      const challenge = new Challenge(input, simpleStrategy);
-      expect(challenge.solve());
+      const challenge = new Almanac(input, simpleStrategy);
+      expect(challenge.solve()).toBe(340_994_526);
     });
   });
 
   describe('Advanced Strategy', () => {
     test('Example solution', () => {
-      const challenge = new Challenge(example, advancedStrategy);
+      const challenge = new Almanac(example, advancedStrategy);
       expect(challenge.solve());
     });
 
     test('Input solution', () => {
-      const challenge = new Challenge(input, advancedStrategy);
+      const challenge = new Almanac(input, advancedStrategy);
       expect(challenge.solve());
     });
   });
