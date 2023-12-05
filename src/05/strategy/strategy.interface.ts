@@ -1,3 +1,5 @@
+import { AlmanacMap } from '../file';
+
 export interface Strategy {
-  solve(part: Part): number;
+  solve(almanacMap: AlmanacMap): number;
 }

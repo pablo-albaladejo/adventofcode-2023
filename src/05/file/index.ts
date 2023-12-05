@@ -5,19 +5,18 @@ import {
 import Maps, { SeedMapKey } from '../seeds/seed-map-key.enum';
 import { SeedMap, SeedMapRange } from '../seeds/seed-maps';
 
+export type AlmanacSeedMap = {
+  [key in SeedMapKey]?: SeedMap;
+}
 export interface AlmanacMap {
   seeds: number[];
-  seedMaps: {
-    [key in SeedMapKey]?: SeedMap;
-  };
+  seedMaps: AlmanacSeedMap;
 }
 
 export const loadParts = (filePath: string): AlmanacMap => {
   const blocks: string[] = readByDelimeterFromTextFile(filePath, '\n\n');
 
   const result: AlmanacMap = { seeds: [], seedMaps: {} };
-
-  let seeds: number[] = [];
 
   for (const block of blocks) {
     const lines = block.split('\n');
