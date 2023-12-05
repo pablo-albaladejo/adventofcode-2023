@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "test:watch": "jest --watch --coverage  --testPathPattern="
+    "test:watch": "jest --watch --coverage"
   },
   "repository": {
     "type": "git",
