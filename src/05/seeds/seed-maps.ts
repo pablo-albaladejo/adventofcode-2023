@@ -7,6 +7,12 @@ export class SeedMapRange {
     this.source = source;
     this.length = length;
   }
+  getDestinationMap(origin: number): number | undefined {
+    const isInRange =
+      origin >= this.source && origin < this.source + this.length;
+    if (!isInRange) return undefined;
+    return origin - this.source + this.destination;
+  }
 }
 
 export class SeedMap {
@@ -14,5 +20,15 @@ export class SeedMap {
 
   constructor(ranges: SeedMapRange[]) {
     this.ranges = ranges;
+  }
+
+  map(origin: number): number {
+    for (const range of this.ranges) {
+      const result = range.getDestinationMap(origin);
+      if (result) {
+        return result;
+      }
+    }
+    return origin;
   }
 }
