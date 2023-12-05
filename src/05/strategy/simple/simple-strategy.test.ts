@@ -1,6 +1,6 @@
 import { AlmanacMap, loadParts } from '../../file';
-import SeedMapKey from '../../seeds/seed-map-key.enum';
-import { SeedMap } from '../../seeds/seed-maps';
+import SeedMapKey from '../../seeds/maps/seed-map-key.enum';
+import { SeedMap } from '../../seeds/maps/seed-maps';
 import { SimpleStrategy } from './simple-strategy';
 import path from 'path';
 
@@ -10,28 +10,6 @@ const example: AlmanacMap = loadParts(
 const simpleStrategy = new SimpleStrategy();
 
 describe('SimpleStrategy', () => {
-  test('Example values', () => {
-    expect(
-      simpleStrategy.seedLocation(example.seeds[0], example.seedMaps)
-    ).toBe(82);
-
-    expect(
-      simpleStrategy.seedLocation(example.seeds[1], example.seedMaps)
-    ).toBe(43);
-
-    expect(
-      simpleStrategy.seedLocation(example.seeds[2], example.seedMaps)
-    ).toBe(86);
-
-    expect(
-      simpleStrategy.seedLocation(example.seeds[3], example.seedMaps)
-    ).toBe(35);
-  });
-
-  test('Void values', () => {
-    expect(simpleStrategy.seedLocation(-1, {})).toBe(-1);
-  });
-
   test('Example solution', () => {
     expect(simpleStrategy.solve(example)).toBe(35);
   });

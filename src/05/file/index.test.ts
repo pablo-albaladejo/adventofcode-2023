@@ -1,7 +1,7 @@
 import { AlmanacMap, loadParts } from '.';
 import path from 'path';
-import SeedMapKey from '../seeds/seed-map-key.enum';
-import { SeedMap, SeedMapRange } from '../seeds/seed-maps';
+import SeedMapKey from '../seeds/maps/seed-map-key.enum';
+import { SeedMap, SeedMapRange } from '../seeds/maps/seed-maps';
 
 describe('file', () => {
   const example: AlmanacMap = loadParts(

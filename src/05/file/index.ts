@@ -2,8 +2,8 @@ import {
   readByDelimeterFromTextFile,
   readLinesFromTextFile,
 } from '../../helpers';
-import Maps, { SeedMapKey } from '../seeds/seed-map-key.enum';
-import { SeedMap, SeedMapRange } from '../seeds/seed-maps';
+import Maps, { SeedMapKey } from '../seeds/maps/seed-map-key.enum';
+import { SeedMap, SeedMapRange } from '../seeds/maps/seed-maps';
 
 export type AlmanacSeedMap = {
   [key in SeedMapKey]?: SeedMap;
