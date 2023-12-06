@@ -4,6 +4,9 @@ import { Race } from '../race';
 const getValues = (str: string): number[] =>
   str.split(':')[1].trim().split(/\s+/).map(Number);
 
+const getValue = (str: string): number =>
+  Number(str.split(':')[1].trim().split(/\s+/).join(''));
+
 export const loadRaces = (filePath: string): Race[] => {
   const races: Race[] = [];
   const lines = readLinesFromTextFile(filePath);
@@ -16,4 +19,13 @@ export const loadRaces = (filePath: string): Race[] => {
   });
 
   return races;
+};
+
+export const loadRace = (filePath: string): Race => {
+  const lines = readLinesFromTextFile(filePath);
+
+  const raceTime: number = getValue(lines[0]);
+  const raceDistance: number = getValue(lines[1]);
+
+  return new Race(raceTime, raceDistance);
 };
