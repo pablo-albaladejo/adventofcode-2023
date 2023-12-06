@@ -1,11 +1,10 @@
-import { Part } from './part';
 import { Strategy } from './strategy/strategy.interface';
 
 export class Challenge {
-  parts: Part[];
+  parts: number[];
   strategy: Strategy;
 
-  constructor(parts: Part[], strategy: Strategy) {
+  constructor(parts: number[], strategy: Strategy) {
     this.parts = parts;
     this.strategy = strategy;
   }

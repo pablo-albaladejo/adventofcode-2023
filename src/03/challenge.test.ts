@@ -1,14 +1,15 @@
 import path from 'path';
 import { SimpleStrategy } from './strategy/simple/simple-strategy';
 import { AdvancedStrategy } from './strategy/advanced/advanced-strategy';
-import { loadParts } from './file';
-import { Part } from './part';
 import { Challenge } from './challenge';
+import { loadPartNumbers } from './file';
 
-const example: Part[] = loadParts(
+const example: number[] = loadPartNumbers(
   path.join(__dirname, './fixtures/example.txt')
 );
-const input: Part[] = loadParts(path.join(__dirname, './fixtures/input.txt'));
+const input: number[] = loadPartNumbers(
+  path.join(__dirname, './fixtures/input.txt')
+);
 
 const simpleStrategy = new SimpleStrategy();
 const advancedStrategy = new AdvancedStrategy();
@@ -17,12 +18,12 @@ describe('Challenge', () => {
   describe('Simple Strategy', () => {
     test('Example solution', () => {
       const challenge = new Challenge(example, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(4361);
     });
 
     test('Input solution', () => {
       const challenge = new Challenge(input, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(514_969);
     });
   });
 

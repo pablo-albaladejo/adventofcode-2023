@@ -102,7 +102,7 @@ export const getAdjajectStrings = (
     result.push(lines[lineNumber + 1].slice(start, end + 1));
 
   //diagonal left below
-  if (start > 1 && lineNumber > 0 && lineNumber < lines.length - 1)
+  if (start > 1 && lineNumber < lines.length - 1)
     result.push(lines[lineNumber + 1][start - 1]);
 
   return result;
@@ -114,7 +114,7 @@ export const isPartNumber = (
   end: any,
   lines: string[]
 ): boolean => {
-  return getAdjajectStrings(lineNumber, start, end, lines).every(
-    (str) => !hasSymbols(str)
+  return getAdjajectStrings(lineNumber, start, end, lines).some((str) =>
+    hasSymbols(str)
   );
 };

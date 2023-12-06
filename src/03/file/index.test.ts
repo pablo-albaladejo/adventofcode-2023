@@ -31,22 +31,22 @@ describe('file', () => {
 
   test('getAdjajectStrings', () => {
     expect(getAdjajectStrings(0, 0, 2, lines)).toEqual(['.', '*', '...']);
-    expect(getAdjajectStrings(0, 5, 7, lines)).toEqual(['.', '.', '.', '...', '.', '.']);
+    expect(getAdjajectStrings(0, 5, 7, lines)).toEqual(['.', '.', '.', '...', '.']);
     expect(getAdjajectStrings(2, 2, 3, lines)).toEqual(['.', '.', '.*', '.', '.', '.', '..', '.'])
   });
 
   test('isPartNumber', () => {
     expect(isPartNumber(0, numberInfo1.start, numberInfo1.end, lines)).toBe(
-      false
+      true
     );
     expect(isPartNumber(0, numberInfo2.start, numberInfo2.end, lines)).toBe(
-      true
+      false
     );
   });
 
   test('loadPartNumbers', () => {
     expect(
       loadPartNumbers(path.join(__dirname, '../fixtures/example.txt'))
-    ).toEqual([114, 58]);
+    ).toEqual([467, 35, 633, 617, 592, 755, 664, 598]);
   });
 });
