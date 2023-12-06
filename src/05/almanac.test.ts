@@ -28,12 +28,12 @@ describe('Almanac', () => {
   describe('Advanced Strategy', () => {
     test('Example solution', () => {
       const challenge = new Almanac(example, advancedStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(46);
     });
 
     test('Input solution', () => {
       const challenge = new Almanac(input, advancedStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(52_210_644);
     });
   });
 });
