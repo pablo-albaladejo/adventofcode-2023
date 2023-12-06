@@ -1,3 +1,9 @@
+export const getWinnerStrategies = (race: Race): RaceStrategy[] => {
+  return race
+    .getStrategies()
+    .filter((strategy) => strategy.getDistance() > race.distance);
+};
+
 export class RaceStrategy {
   charging: number;
   racing: number;

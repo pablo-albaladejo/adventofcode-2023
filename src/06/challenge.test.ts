@@ -1,40 +1,45 @@
 import path from 'path';
 import { SimpleStrategy } from './strategy/simple/simple-strategy';
-import { AdvancedStrategy } from './strategy/advanced/advanced-strategy';
-import { loadRaces } from './file';
+import { loadRace, loadRaces } from './file';
 import { Race } from './race';
 import { Challenge } from './challenge';
 
-const example: Race[] = loadRaces(
+const exampleRaces: Race[] = loadRaces(
   path.join(__dirname, './fixtures/example.txt')
 );
-const input: Race[] = loadRaces(path.join(__dirname, './fixtures/input.txt'));
+const inputRaces: Race[] = loadRaces(
+  path.join(__dirname, './fixtures/input.txt')
+);
+
+const exampleRace: Race = loadRace(
+  path.join(__dirname, './fixtures/example.txt')
+);
+const inputRace: Race = loadRace(path.join(__dirname, './fixtures/input.txt'));
 
 const simpleStrategy = new SimpleStrategy();
-const advancedStrategy = new AdvancedStrategy();
 
 describe('Challenge', () => {
   describe('Simple Strategy', () => {
     test('Example solution', () => {
-      const challenge = new Challenge(example, simpleStrategy);
+      const challenge = new Challenge(exampleRaces, simpleStrategy);
       expect(challenge.solve()).toBe(288);
     });
 
     test('Input solution', () => {
-      const challenge = new Challenge(input, simpleStrategy);
+      const challenge = new Challenge(inputRaces, simpleStrategy);
       expect(challenge.solve()).toBe(1_312_850);
     });
   });
 
   describe('Advanced Strategy', () => {
     test('Example solution', () => {
-      const challenge = new Challenge(example, advancedStrategy);
-      expect(challenge.solve());
+      const challenge = new Challenge([exampleRace], simpleStrategy);
+      expect(challenge.solve()).toBe(71_503);
     });
 
     test('Input solution', () => {
-      const challenge = new Challenge(input, advancedStrategy);
-      expect(challenge.solve());
+      const challenge = new Challenge([inputRace], simpleStrategy);
+      expect(challenge.solve()).toBe(36_749_103);
     });
   });
 });

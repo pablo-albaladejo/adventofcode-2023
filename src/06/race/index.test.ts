@@ -1,4 +1,4 @@
-import { Race, RaceStrategy } from '.';
+import { Race, RaceStrategy, getWinnerStrategies } from '.';
 import { loadRaces } from '../file';
 import path from 'path';
 
@@ -42,4 +42,20 @@ describe('Race', () => {
       ]);
     });
   });
+
+  describe('getWinnerStrategies', () => {
+    const raceStrategy3 = new RaceStrategy(2, 5);
+    const raceStrategy4 = new RaceStrategy(3, 4);
+    const raceStrategy5 = new RaceStrategy(4, 3);
+    const raceStrategy6 = new RaceStrategy(5, 2);
+    test('race 1', () => {
+      expect(getWinnerStrategies(example[0])).toEqual([
+        raceStrategy3,
+        raceStrategy4,
+        raceStrategy5,
+        raceStrategy6,
+      ]);
+    });
+  });
+
 });
