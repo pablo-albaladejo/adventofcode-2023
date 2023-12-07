@@ -1,3 +1,5 @@
+import { Hand } from '../hand';
+
 export interface Strategy {
-  solve(hand: Hand): number;
+  solve(hands: Hand[]): number;
 }

@@ -91,6 +91,10 @@ export class Hand {
     this.bid = bid;
   }
 
+  getBid(): number {
+    return this.bid;
+  }
+
   compare(other: Hand): number {
     const type = getHandType(this.cards);
     const otherType = getHandType(other.cards);

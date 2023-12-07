@@ -9,5 +9,7 @@ const example: Hand[] = loadHands(
 const simpleStrategy = new SimpleStrategy();
 
 describe('SimpleStrategy', () => {
-  test('Example values', () => {});
+  test('Example values', () => {
+    expect(simpleStrategy.solve(example)).toBe(6440);
+  });
 });

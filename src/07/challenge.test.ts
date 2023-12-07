@@ -17,12 +17,12 @@ describe('Challenge', () => {
   describe('Simple Strategy', () => {
     test('Example solution', () => {
       const challenge = new Challenge(example, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(6440);
     });
 
     test('Input solution', () => {
       const challenge = new Challenge(input, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(253_933_213);
     });
   });
 
