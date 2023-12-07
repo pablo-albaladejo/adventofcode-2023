@@ -25,7 +25,7 @@ const hand5 = new Hand(
 
 describe('file', () => {
   test('lineToHand', () => {
-    expect(lineToHand('')).toEqual(hand1);
+    expect(lineToHand('32T3K 765')).toEqual(hand1);
   });
   test('loadHands', () => {
     expect(loadHands(path.join(__dirname, '../fixtures/example.txt'))).toEqual([
