@@ -91,7 +91,17 @@ export class Hand {
     this.bid = bid;
   }
 
-  /*compare(other: Hand): number {
-    return 0;
-  }*/
+  isStrongerThan(other: Hand): boolean {
+    const type = getHandType(this.cards);
+    const otherType = getHandType(other.cards);
+
+    if (type > otherType) return true;
+    else if (type < otherType) return false;
+
+    for (let i = 0; i < this.cards.length; i++) {
+      if (this.cards[i] > other.cards[i]) return true;
+      if (this.cards[i] < other.cards[i]) return false;
+    }
+    return false;
+  }
 }
