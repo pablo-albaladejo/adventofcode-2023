@@ -10,5 +10,6 @@ const advancedStrategy = new AdvancedStrategy();
 
 describe('AdvancedStrategy', () => {
   test('Example values', () => {
+    expect(advancedStrategy.solve(example)).toBe(5905);
   });
 });

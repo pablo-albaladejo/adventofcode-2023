@@ -1,4 +1,5 @@
 export enum Card {
+  One = 1,
   Two = 2,
   Three = 3,
   Four = 4,
@@ -24,7 +25,20 @@ export enum HandType {
   FiveOfAKind = 6,
 }
 
-export const getHandType = (cards: Card[]): HandType => {
+const getCardsWithCount = (
+  counts: Map<Card, number>,
+  count: number
+): Card[] => {
+  const cards: Card[] = [];
+  for (const [card, countInMap] of counts) {
+    if (countInMap === count) {
+      cards.push(card);
+    }
+  }
+  return cards;
+};
+
+const getCounts = (cards: Card[]): Map<Card, number> => {
   const counts = new Map<Card, number>();
   for (const card of cards) {
     if (counts.has(card)) {
@@ -33,7 +47,11 @@ export const getHandType = (cards: Card[]): HandType => {
       counts.set(card, 1);
     }
   }
+  return counts;
+};
 
+export const getHandType = (cards: Card[]): HandType => {
+  const counts = getCounts(cards);
   const pairs: Card[] = [];
   const threeOfAKinds: Card[] = [];
   const fourOfAKinds: Card[] = [];
@@ -82,6 +100,40 @@ export const getHandType = (cards: Card[]): HandType => {
   return HandType.HighCard;
 };
 
+const getNumber = (handType: HandType): number => {
+  switch (handType) {
+    case HandType.FourOfAKind:
+      return 4;
+    case HandType.FullHouse:
+      return 3;
+    case HandType.ThreeOfAKind:
+      return 3;
+    case HandType.TwoPair:
+      return 2;
+    case HandType.OnePair:
+      return 2;
+    default:
+      return 1;
+  }
+};
+
+const extendHand = (
+  cards: Card[],
+  countsMap: Map<Card, number>,
+  handType: HandType
+): Card[] => {
+  const cardsWithCount: Card[] = getCardsWithCount(
+    countsMap,
+    getNumber(handType)
+  )!;
+
+  const extendedCard = cardsWithCount.reduce(
+    (acc, card) => (card > acc ? card : acc),
+    Card.One
+  );
+  return cards.map((card) => (card === Card.Jack ? extendedCard : card));
+};
+
 export class Hand {
   private cards: Card[];
   private bid: number;
@@ -95,16 +147,41 @@ export class Hand {
     return this.bid;
   }
 
-  compare(other: Hand): number {
-    const type = getHandType(this.cards);
-    const otherType = getHandType(other.cards);
+  getCards(isExtended: boolean = false): Card[] {
+    if (isExtended) {
+      const nonJackCards = this.cards.filter((card) => card !== Card.Jack);
+      if (nonJackCards.length === 0)
+        return [Card.Ace, Card.Ace, Card.Ace, Card.Ace, Card.Ace];
+      return extendHand(
+        this.cards,
+        getCounts(nonJackCards),
+        getHandType(nonJackCards)
+      );
+    } else return this.cards;
+  }
+
+  compare(other: Hand, isExtended: boolean = false): number {
+    const type = getHandType(this.getCards(isExtended));
+    const otherType = getHandType(other.getCards(isExtended));
 
     if (type > otherType) return 1;
     else if (type < otherType) return -1;
 
     for (let i = 0; i < this.cards.length; i++) {
-      if (this.cards[i] > other.cards[i]) return 1;
-      if (this.cards[i] < other.cards[i]) return -1;
+      const currentCard = isExtended
+        ? this.cards[i] === Card.Jack
+          ? Card.One
+          : this.cards[i]
+        : this.cards[i];
+
+      const currentOtherCard = isExtended
+        ? other.cards[i] === Card.Jack
+          ? Card.One
+          : other.cards[i]
+        : other.cards[i];
+
+      if (currentCard > currentOtherCard) return 1;
+      if (currentCard < currentOtherCard) return -1;
     }
     return 0;
   }
