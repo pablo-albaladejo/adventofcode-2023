@@ -47,31 +47,31 @@ describe('Hand', () => {
   describe('compare hands', () => {
     describe('not equal types', () => {
       test('fiveOfAKind greater than fourOfAKind', () => {
-        expect(fiveOfAKindHand.isStrongerThan(fourOfAKindHand)).toBe(true);
+        expect(fiveOfAKindHand.compare(fourOfAKindHand)).toBe(1);
       });
       test('fiveOfAKind lower than fourOfAKind', () => {
-        expect(fourOfAKindHand.isStrongerThan(fiveOfAKindHand)).toBe(false);
+        expect(fourOfAKindHand.compare(fiveOfAKindHand)).toBe(-1);
       });
 
       test('fiveOfAKind greater than fullHouse', () => {
-        expect(fiveOfAKindHand.isStrongerThan(fullHouseHand)).toBe(true);
+        expect(fiveOfAKindHand.compare(fullHouseHand)).toBe(1);
       });
       test('fiveOfAKind lower than fullHouse', () => {
-        expect(fullHouseHand.isStrongerThan(fiveOfAKindHand)).toBe(false);
+        expect(fullHouseHand.compare(fiveOfAKindHand)).toBe(-1);
       });
     });
 
     describe('equal types', () => {
       test('33332 > 2AAAA', () => {
-        expect(hand1.isStrongerThan(hand2)).toBe(true);
+        expect(hand1.compare(hand2)).toBe(1);
       });
 
       test('2AAAA < 33332', () => {
-        expect(hand2.isStrongerThan(hand1)).toBe(false);
+        expect(hand2.compare(hand1)).toBe(-1);
       });
 
       test('33332 = 33332', () => {
-        expect(hand1.isStrongerThan(hand1)).toBe(false);
+        expect(hand1.compare(hand1)).toBe(0);
       });
     });
   });
