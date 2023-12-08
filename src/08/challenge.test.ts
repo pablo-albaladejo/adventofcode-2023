@@ -8,6 +8,9 @@ import { Challenge } from './challenge';
 const example: CammelMap = loadCammelMap(
   path.join(__dirname, './fixtures/example.txt')
 );
+const example3: CammelMap = loadCammelMap(
+  path.join(__dirname, './fixtures/example3.txt')
+);
 const input: CammelMap = loadCammelMap(
   path.join(__dirname, './fixtures/input.txt')
 );
@@ -28,15 +31,15 @@ describe('Challenge', () => {
     });
   });
 
-  /* describe('Advanced Strategy', () => {
+  describe('Advanced Strategy', () => {
     test('Example solution', () => {
-      const challenge = new Challenge(example, advancedStrategy);
-      expect(challenge.solve());
+      const challenge = new Challenge(example3, advancedStrategy);
+      expect(challenge.solve()).toBe(6);
     });
 
     test('Input solution', () => {
       const challenge = new Challenge(input, advancedStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(9_858_474_970_153);
     });
-  });*/
+  });
 });
