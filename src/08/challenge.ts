@@ -2,15 +2,15 @@ import { CammelMap } from './map';
 import { Strategy } from './strategy/strategy.interface';
 
 export class Challenge {
-  parts: CammelMap[];
+  cammelMap: CammelMap;
   strategy: Strategy;
 
-  constructor(parts: CammelMap[], strategy: Strategy) {
-    this.parts = parts;
+  constructor(cammelMap: CammelMap, strategy: Strategy) {
+    this.cammelMap = cammelMap;
     this.strategy = strategy;
   }
 
   solve() {
-    return this.strategy.solve(this.parts);
+    return this.strategy.solve(this.cammelMap);
   }
 }

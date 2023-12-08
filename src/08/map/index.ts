@@ -1,11 +1,13 @@
 export const enum Direction {
   L = 'L',
-  R = 'R'
+  R = 'R',
 }
 
+export type Node = { [key: string]: string };
+
 export type Nodes = {
-  [key: string]: { [key: string]: string }
-}
+  [key: string]: Node;
+};
 
 export class CammelMap {
   private directions: Direction[];
@@ -14,5 +16,17 @@ export class CammelMap {
   constructor(directions: Direction[], nodes: Nodes) {
     this.directions = directions;
     this.nodes = nodes;
+  }
+
+  getDirections(): Direction[] {
+    return this.directions;
+  }
+
+  getNodes(): Nodes {
+    return this.nodes;
+  }
+
+  getNode(key: string): Node {
+    return this.nodes[key];
   }
 }
