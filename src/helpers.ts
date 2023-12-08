@@ -16,3 +16,10 @@ export const readByDelimeterFromTextFile = (
     return [];
   }
 };
+
+export const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+export const lcm = (a: number, b: number): number => (a * b) / gcd(a, b);
+export const calculateLCM = (numbers: number[]): number => {
+  return numbers.reduce((acc, num) => lcm(acc, num), numbers[0]);
+}
+
