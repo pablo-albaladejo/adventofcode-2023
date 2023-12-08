@@ -29,4 +29,26 @@ export class CammelMap {
   getNode(key: string): Node {
     return this.nodes[key];
   }
+
+  getSteps(intialCursor: string, isFinishNode: Function) {
+    let direcctionCursor = -1;
+    let nodeCursor = intialCursor;
+    let steps = 0;
+
+    do {
+      const node = this.getNode(nodeCursor);
+
+      direcctionCursor =
+        direcctionCursor < this.getDirections().length - 1
+          ? direcctionCursor + 1
+          : 0;
+      const direction: Direction = this.getDirections()[direcctionCursor];
+
+      nodeCursor = node[direction];
+
+      steps++;
+    } while (!isFinishNode(nodeCursor));
+
+    return steps;
+  }
 }
