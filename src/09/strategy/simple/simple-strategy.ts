@@ -3,6 +3,6 @@ import { Strategy } from '../strategy.interface';
 
 export class SimpleStrategy implements Strategy {
   solve(histories: ReportHistory[]): number {
-    return 0;
+    return histories.reduce((acc, history) => history.extrapolate() + acc, 0);
   }
 }

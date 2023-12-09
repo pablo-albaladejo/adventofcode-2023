@@ -9,5 +9,7 @@ const example: ReportHistory[] = loadHistories(
 const simpleStrategy = new SimpleStrategy();
 
 describe('SimpleStrategy', () => {
-  test('Example values', () => {});
+  test('Example values', () => {
+    expect(simpleStrategy.solve(example)).toEqual(114);
+  });
 });
