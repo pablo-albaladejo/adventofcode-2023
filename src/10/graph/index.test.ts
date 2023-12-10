@@ -1,3 +1,12 @@
+import { loadGraph } from '../file';
+import path from 'path';
+
+const original = loadGraph(path.join(__dirname, '../fixtures/example2a.txt'));
+const clean = loadGraph(path.join(__dirname, '../fixtures/example2b.txt'));
+
 describe('Graph', () => {
-  test('', () => {});
+  test('clean', () => {
+    original.clean();
+    expect(original).toEqual(clean);
+  });
 });

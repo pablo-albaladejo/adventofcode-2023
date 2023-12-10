@@ -10,7 +10,7 @@ const addGraphNode = (graph: Graph, tile: string, i: number, j: number) => {
       break;
     case '|':
       // Vertical pipe
-      graph.addEdge(position, new Position(i -1 , j));
+      graph.addEdge(position, new Position(i - 1, j));
       graph.addEdge(position, new Position(i + 1, j));
       break;
     case '-':
@@ -54,6 +54,8 @@ export const loadGraph = (filePath: string): Graph => {
       addGraphNode(graph, char, index, charIndex);
     });
   });
+
+  console.log(JSON.stringify(graph, null, 2));
 
   return graph;
 };

@@ -15,8 +15,11 @@ export class GraphNode {
     this.position = position;
     this.edges = [];
   }
-  
+
   addEdge(position: Position) {
+    if (this.edges.some((edge) => edge.x == position.x && edge.y == position.y))
+      return;
+
     this.edges.push(position);
   }
 }
@@ -36,6 +39,7 @@ export class Graph {
 
   addEdge(source: Position, destination: Position) {
     this.getNodeOrCreate(source).addEdge(destination);
+    this.getNodeOrCreate(destination).addEdge(source);
   }
 
   getNode(position: Position): GraphNode | undefined {
