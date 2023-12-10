@@ -5,9 +5,6 @@ export class Position {
     this.x = x;
     this.y = y;
   }
-  equal(position: Position) {
-    return this.x === position.x && this.y === position.y;
-  }
 }
 
 export class GraphNode {
@@ -18,10 +15,6 @@ export class GraphNode {
     this.position = position;
     this.edges = [];
   }
-  getPosition(): Position {
-    return this.position;
-  }
-
   
   addEdge(position: Position) {
     this.edges.push(position);
@@ -61,10 +54,6 @@ export class Graph {
     node = new GraphNode(position);
     this.addNode(node);
     return node;
-  }
-
-  getStart(): Position {
-    return this.start;
   }
 
   setStart(start: Position) {
