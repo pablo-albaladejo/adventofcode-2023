@@ -6,7 +6,7 @@ import { PipesGraph } from './graph';
 import { Challenge } from './challenge';
 
 const example: PipesGraph = loadGraph(
-  path.join(__dirname, './fixtures/example1.txt')
+  path.join(__dirname, './fixtures/example2a.txt')
 );
 const input: PipesGraph = loadGraph(path.join(__dirname, './fixtures/input.txt'));
 
@@ -17,12 +17,12 @@ describe('Challenge', () => {
   describe('Simple Strategy', () => {
     test('Example solution', () => {
       const challenge = new Challenge(example, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(8);
     });
 
     test('Input solution', () => {
       const challenge = new Challenge(input, simpleStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(6956);
     });
   });
 

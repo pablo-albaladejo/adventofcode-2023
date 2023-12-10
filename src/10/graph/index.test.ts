@@ -1,5 +1,4 @@
-import { PipesGraph, Position } from '.';
-import { GraphNodeKey } from '../../common/graph';
+import { PipesGraph } from '.';
 import { loadGraph } from '../file';
 import path from 'path';
 
@@ -12,5 +11,9 @@ describe('Graph', () => {
   test('clean', () => {
     original.clean();
     expect(original).toEqual(clean);
+  });
+
+  test('distances', () => {
+    expect(original.calculateDistancesFromStart()).toBe(8);
   });
 });

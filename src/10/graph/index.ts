@@ -34,14 +34,10 @@ export class PipesGraph extends Graph {
   }
 
   clean() {
-    const visited: GraphNodeKey[] = [];
-    const start: GraphNodeKey = this.getNode(this.start!)!.key;
-    this.dfs(start, visited);
+    if (this.start) this.removeUnconnected(this.start);
+  }
 
-    for (const node of this.nodes) {
-      if (!visited.some((visitedNode) => visitedNode.equals(node.key))) {
-        this.removeNode(node.key);
-      }
-    }
+  calculateDistancesFromStart(): number | undefined {
+    return this.start && this.bfsWithMaxDepth(this.start);
   }
 }
