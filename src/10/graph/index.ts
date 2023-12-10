@@ -17,13 +17,16 @@ export class Position extends GraphNodeKey {
 
 export class PipesGraph extends Graph {
   private start?: Position;
-
+  
   constructor() {
     super();
   }
-
+  
   setStart(start: Position) {
     this.addNode(new GraphNode(start));
     this.start = start;
+  }
+  getStart(): GraphNode | undefined {
+    return this.start && this.getNode(this.start);
   }
 }
