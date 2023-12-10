@@ -44,14 +44,34 @@ export class Graph {
     keys.forEach((key) => this.removeNode(key));
   }
 
-  protected dfsVisited(v: GraphNodeKey, visited: GraphNodeKey[]) {
+  protected dfsVisitedRecursive(v: GraphNodeKey, visited: GraphNodeKey[]) {
     visited.push(v);
     const node = this.getNode(v);
 
     if (node) {
       for (const neighbor of node.edges) {
         if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
-          this.dfsVisited(neighbor, visited);
+          this.dfsVisitedRecursive(neighbor, visited);
+        }
+      }
+    }
+  }
+
+  protected dfsVisited(v: GraphNodeKey, visited: GraphNodeKey[]) {
+    const stack: GraphNodeKey[] = [];
+    stack.push(v);
+  
+    while (stack.length > 0) {
+      const currentKey = stack.pop()!;
+      const currentNode = this.getNode(currentKey);
+  
+      if (currentNode && !visited.some((visitedNode) => visitedNode.equals(currentKey))) {
+        visited.push(currentKey);
+  
+        for (const neighbor of currentNode.edges) {
+          if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
+            stack.push(neighbor);
+          }
         }
       }
     }
