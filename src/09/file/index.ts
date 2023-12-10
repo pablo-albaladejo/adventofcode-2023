@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 import { ReportHistory } from '../history';
 
 export const loadHistories = (filePath: string): ReportHistory[] => {

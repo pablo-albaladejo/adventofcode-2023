@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../helpers';
+import { readLinesFromTextFile } from '../common/helpers';
 
 import path from 'path';
 import { Calibration } from './calibration';

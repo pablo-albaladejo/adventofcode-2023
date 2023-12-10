@@ -5,12 +5,12 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/src/helpers.ts',
+    '/src/common/',
     '/src/00/'
   ],
   collectCoverageFrom: [
     "src/**/*.ts",
-    "!src/helpers.ts",
+    "!src/common/",
     "!src/00/**/*"
   ],
 };

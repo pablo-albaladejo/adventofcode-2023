@@ -1,6 +1,5 @@
-import { GraphNodeKey } from '../../common/graph';
-import { readLinesFromTextFile } from '../../helpers';
-import { PipesGraph, Position } from '../graph';
+import { readLinesFromTextFile } from '../../common/helpers';
+import { PipesGraph, PipePosition } from '../graph';
 
 const canConnectWithNorth = (
   map: string[][],
@@ -30,7 +29,7 @@ const addGraphNode = (
   i: number,
   j: number
 ) => {
-  const position = new Position(i, j);
+  const position = new PipePosition(i, j);
 
   switch (tile) {
     case '.':
@@ -40,48 +39,48 @@ const addGraphNode = (
     case '|':
       // Vertical pipe
       if (canConnectWithNorth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i - 1, j));
       if (canConnectWithSouth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i + 1, j));
       break;
 
     case '-':
       // Horizontal pipe
       if (canConnectWithWest(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j - 1));
       if (canConnectWithEast(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j + 1));
       break;
 
     case 'L':
       // 90-degree bend connecting north and east
       if (canConnectWithNorth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i - 1, j));
       if (canConnectWithEast(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j + 1));
       break;
 
     case 'J':
       // 90-degree bend connecting north and west
       if (canConnectWithNorth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i - 1, j));
       if (canConnectWithWest(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j - 1));
       break;
     case '7':
       // 90-degree bend connecting south and west
       if (canConnectWithSouth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i + 1, j));
       if (canConnectWithWest(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j - 1));
       break;
 
     case 'F':
       // 90-degree bend connecting south and east
       if (canConnectWithSouth(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new PipePosition(i + 1, j));
       if (canConnectWithEast(map, i, j))
-        graph.addEdgeBidirectional(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new PipePosition(i, j + 1));
       break;
 
     case 'S':

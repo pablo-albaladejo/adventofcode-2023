@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 
 export class NumberInfo {
   value: number;

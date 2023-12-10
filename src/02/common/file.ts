@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 import { Game, GameSet } from '../game';
 
 export const getColorCount = (str: string, color: string): number => {

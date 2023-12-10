@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 import { Card, Hand } from '../hand';
 
 export const convertStringToCardArray = (input: string): Card[] => {

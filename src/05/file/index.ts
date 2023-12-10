@@ -1,7 +1,7 @@
 import {
   readByDelimeterFromTextFile,
   readLinesFromTextFile,
-} from '../../helpers';
+} from '../../common/helpers';
 import Maps, { SeedMapKey } from '../seeds/maps/seed-map-key.enum';
 import { SeedMap, SeedMapRange } from '../seeds/maps/seed-maps';
 

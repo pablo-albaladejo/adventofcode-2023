@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 import { CammelMap, Direction, Nodes } from '../map';
 
 export const loadCammelMap = (filePath: string): CammelMap => {

@@ -1,4 +1,4 @@
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 import { Card } from '../card';
 
 const parseValues = (str: string): number[] => {

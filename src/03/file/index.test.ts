@@ -7,7 +7,7 @@ import {
   isPartNumber,
   loadPartNumbers,
 } from '.';
-import { readLinesFromTextFile } from '../../helpers';
+import { readLinesFromTextFile } from '../../common/helpers';
 
 const lines = readLinesFromTextFile(
   path.join(__dirname, '../fixtures/example.txt')

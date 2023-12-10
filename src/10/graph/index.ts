@@ -1,43 +1,32 @@
 import { Graph, GraphNode, GraphNodeKey } from '../../common/graph';
-export class Position extends GraphNodeKey {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    super();
-    this.x = x;
-    this.y = y;
-  }
-
-  equals(other: Position) {
+import { Point } from '../../common/polygon';
+export class PipePosition extends Point implements GraphNodeKey {
+  equals(other: PipePosition) {
     return this.x == other.x && this.y == other.y;
   }
 }
 
 export class PipesGraph extends Graph {
-  private start?: Position;
+  private start?: PipePosition;
 
   constructor() {
     super();
   }
 
-  setStart(start: Position) {
+  setStart(start: PipePosition) {
     this.addNode(new GraphNode(start));
     this.start = start;
   }
   getStart(): GraphNode | undefined {
     return this.start && this.getNode(this.start);
   }
-  getSize(): number {
-    return this.nodes.length;
-  }
 
   clean() {
     if (this.start) this.removeUnconnected(this.start);
   }
 
-  getPath(startKey: GraphNodeKey): Position[] {
-    const path: Position[] = [];
+  getPath(startKey: GraphNodeKey): PipePosition[] {
+    const path: PipePosition[] = [];
     this.dfsVisited(startKey, path);
     return path;
   }

@@ -1,4 +1,4 @@
-import { calculateLCM } from '../../../helpers';
+import { calculateLCM } from '../../../common/helpers';
 import { CammelMap } from '../../map';
 import { Strategy } from '../strategy.interface';
 export class AdvancedStrategy implements Strategy {
