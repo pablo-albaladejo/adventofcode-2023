@@ -1,11 +1,11 @@
-import { Graph } from './graph';
+import { PipesGraph } from './graph';
 import { Strategy } from './strategy/strategy.interface';
 
 export class Challenge {
-  graph: Graph;
+  graph: PipesGraph;
   strategy: Strategy;
 
-  constructor(graph: Graph, strategy: Strategy) {
+  constructor(graph: PipesGraph, strategy: Strategy) {
     this.graph = graph;
     this.strategy = strategy;
   }

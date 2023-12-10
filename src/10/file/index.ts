@@ -40,48 +40,48 @@ const addGraphNode = (
     case '|':
       // Vertical pipe
       if (canConnectWithNorth(map, i, j))
-        graph.addEdge(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new Position(i - 1, j));
       if (canConnectWithSouth(map, i, j))
-        graph.addEdge(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new Position(i + 1, j));
       break;
 
     case '-':
       // Horizontal pipe
       if (canConnectWithWest(map, i, j))
-        graph.addEdge(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new Position(i, j - 1));
       if (canConnectWithEast(map, i, j))
-        graph.addEdge(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new Position(i, j + 1));
       break;
 
     case 'L':
       // 90-degree bend connecting north and east
       if (canConnectWithNorth(map, i, j))
-        graph.addEdge(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new Position(i - 1, j));
       if (canConnectWithEast(map, i, j))
-        graph.addEdge(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new Position(i, j + 1));
       break;
 
     case 'J':
       // 90-degree bend connecting north and west
       if (canConnectWithNorth(map, i, j))
-        graph.addEdge(position, new Position(i - 1, j));
+        graph.addEdgeBidirectional(position, new Position(i - 1, j));
       if (canConnectWithWest(map, i, j))
-        graph.addEdge(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new Position(i, j - 1));
       break;
     case '7':
       // 90-degree bend connecting south and west
       if (canConnectWithSouth(map, i, j))
-        graph.addEdge(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new Position(i + 1, j));
       if (canConnectWithWest(map, i, j))
-        graph.addEdge(position, new Position(i, j - 1));
+        graph.addEdgeBidirectional(position, new Position(i, j - 1));
       break;
 
     case 'F':
       // 90-degree bend connecting south and east
       if (canConnectWithSouth(map, i, j))
-        graph.addEdge(position, new Position(i + 1, j));
+        graph.addEdgeBidirectional(position, new Position(i + 1, j));
       if (canConnectWithEast(map, i, j))
-        graph.addEdge(position, new Position(i, j + 1));
+        graph.addEdgeBidirectional(position, new Position(i, j + 1));
       break;
 
     case 'S':

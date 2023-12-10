@@ -1,9 +1,9 @@
 import { loadGraph } from '../../file';
-import { Graph } from '../../graph';
+import { PipesGraph } from '../../graph';
 import { AdvancedStrategy } from './advanced-strategy';
 import path from 'path';
 
-const example: Graph = loadGraph(
+const example: PipesGraph = loadGraph(
   path.join(__dirname, '../../fixtures/example1.txt')
 );
 const advancedStrategy = new AdvancedStrategy();

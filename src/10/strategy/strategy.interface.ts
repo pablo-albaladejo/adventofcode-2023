@@ -1,5 +1,5 @@
-import { Graph } from '../graph';
+import { PipesGraph } from '../graph';
 
 export interface Strategy {
-  solve(graph: Graph): number;
+  solve(graph: PipesGraph): number;
 }

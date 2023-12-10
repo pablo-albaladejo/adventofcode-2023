@@ -2,13 +2,13 @@ import path from 'path';
 import { SimpleStrategy } from './strategy/simple/simple-strategy';
 import { AdvancedStrategy } from './strategy/advanced/advanced-strategy';
 import { loadGraph } from './file';
-import { Graph } from './graph';
+import { PipesGraph } from './graph';
 import { Challenge } from './challenge';
 
-const example: Graph = loadGraph(
+const example: PipesGraph = loadGraph(
   path.join(__dirname, './fixtures/example1.txt')
 );
-const input: Graph = loadGraph(path.join(__dirname, './fixtures/input.txt'));
+const input: PipesGraph = loadGraph(path.join(__dirname, './fixtures/input.txt'));
 
 const simpleStrategy = new SimpleStrategy();
 const advancedStrategy = new AdvancedStrategy();

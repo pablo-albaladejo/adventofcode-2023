@@ -1,8 +1,5 @@
 export abstract class GraphNodeKey {
   abstract equals(other: GraphNodeKey): boolean;
-  toString(): string {
-    return JSON.stringify(this, null, 2);
-  }
 }
 
 export class GraphNode {
@@ -18,14 +15,10 @@ export class GraphNode {
     if (this.edges.some((edge) => edge.equals(key))) return;
     this.edges.push(key);
   }
-
-  toString(): string {
-    return JSON.stringify(this, null, 2);
-  }
 }
 
 export class Graph {
-  private nodes: GraphNode[];
+  protected nodes: GraphNode[];
 
   constructor() {
     this.nodes = [];
@@ -62,7 +55,27 @@ export class Graph {
     return node;
   }
 
-  toString(): string {
-    return JSON.stringify(this, null, 2);
+  dfs(v: GraphNodeKey, visited: GraphNodeKey[]) {
+    visited.push(v);
+    const node = this.getNode(v);
+
+    if (node) {
+      for (const neighbor of node.edges) {
+        if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
+          this.dfs(neighbor, visited);
+        }
+      }
+    }
+  }
+
+  removeNode(key: GraphNodeKey){
+    this.nodes = this.nodes.filter((node) => !node.key.equals(key));
+    this.nodes.forEach((node) => {
+      node.edges = node.edges.filter((edge) => !edge.equals(key));
+    } );
+  }
+
+  removeNodes(keys: GraphNodeKey[]){
+    keys.forEach((key) => this.removeNode(key));
   }
 }
