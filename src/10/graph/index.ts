@@ -1,5 +1,4 @@
 import { Graph, GraphNode, GraphNodeKey } from '../../common/graph';
-
 export class Position extends GraphNodeKey {
   x: number;
   y: number;
@@ -37,7 +36,13 @@ export class PipesGraph extends Graph {
     if (this.start) this.removeUnconnected(this.start);
   }
 
-  calculateDistancesFromStart(): number | undefined {
-    return this.start && this.bfsWithMaxDepth(this.start);
+  getPath(startKey: GraphNodeKey): Position[] {
+    const path: Position[] = [];
+    this.dfsVisited(startKey, path);
+    return path;
+  }
+
+  calculateDistancesFromStart(): number {
+    return this.getPath(this.start!).length / 2;
   }
 }

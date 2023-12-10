@@ -1,4 +1,4 @@
-import { PipesGraph } from '.';
+import { PipesGraph, Position } from '.';
 import { loadGraph } from '../file';
 import path from 'path';
 
