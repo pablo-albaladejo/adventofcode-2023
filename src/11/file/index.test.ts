@@ -1,13 +1,12 @@
 import { loadCosmos } from '.';
 import path from 'path';
-import { Cosmos } from '../cosmos';
 
-const cosmos1 = new Cosmos();
+const example = loadCosmos(path.join(__dirname, '../fixtures/example.txt'));
 
 describe('file', () => {
   test('loadCosmos', () => {
-    expect(loadCosmos(path.join(__dirname, '../fixtures/example.txt'))).toEqual(
-      cosmos1
-    );
+    expect(example.getNNodes()).toBe(example.getNRows() * example.getNCols());
+    expect(example.getGalaxyNodeKeys().length).toBe(9);
+    expect(example.getSpaceNodeKeys().length).toBe(91);
   });
 });
