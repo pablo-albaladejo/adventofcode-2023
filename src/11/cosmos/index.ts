@@ -85,4 +85,19 @@ export class Cosmos extends Graph {
   getGalaxyNodeKeys(): CosmosPosition[] {
     return this.galaxyNodeKeys;
   }
+
+  getGalaxyPairs(): [CosmosPosition, CosmosPosition][] {
+    return this.getPairs(this.galaxyNodeKeys);
+  }
+  getPairs(cosmosArray: CosmosPosition[]) {
+    const pairs: [CosmosPosition, CosmosPosition][] = [];
+
+    for (let i = 0; i < cosmosArray.length - 1; i++) {
+      for (let j = i + 1; j < cosmosArray.length; j++) {
+        pairs.push([cosmosArray[i], cosmosArray[j]]);
+      }
+    }
+
+    return pairs;
+  }
 }
