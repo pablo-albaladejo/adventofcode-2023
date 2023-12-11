@@ -4,7 +4,7 @@ import { PipesGraph, PipePosition } from '../graph';
 
 const example = loadGraph(path.join(__dirname, '../fixtures/example1.txt'));
 
-const graph = new PipesGraph();
+const graph = new PipesGraph(5, 5);
 
 //'S'
 graph.setStart(new PipePosition(1, 1));

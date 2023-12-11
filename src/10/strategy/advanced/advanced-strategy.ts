@@ -3,6 +3,6 @@ import { Strategy } from '../strategy.interface';
 
 export class AdvancedStrategy implements Strategy {
   solve(graph: PipesGraph): number {
-    return 0;
+    return graph.calculateInnerPoints();
   }
 }

@@ -29,12 +29,12 @@ describe('Challenge', () => {
   describe('Advanced Strategy', () => {
     test('Example solution', () => {
       const challenge = new Challenge(example, advancedStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(1);
     });
 
     test('Input solution', () => {
       const challenge = new Challenge(input, advancedStrategy);
-      expect(challenge.solve());
+      expect(challenge.solve()).toBe(455);
     });
   });
 });

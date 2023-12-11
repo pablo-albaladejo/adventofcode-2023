@@ -92,7 +92,7 @@ const addGraphNode = (
 
 export const loadGraph = (filePath: string): PipesGraph => {
   const lines: string[] = readLinesFromTextFile(filePath);
-  const graph = new PipesGraph();
+  const graph = new PipesGraph(lines.length, lines[0].length);
 
   const map: string[][] = [];
   lines.forEach((line, index) => (map[index] = line.split('')));

@@ -1,5 +1,5 @@
 import { Graph, GraphNode, GraphNodeKey } from '../../common/graph';
-import { Point } from '../../common/polygon';
+import { Point, rayCasting } from '../../common/polygon';
 export class PipePosition extends Point implements GraphNodeKey {
   equals(other: PipePosition) {
     return this.x == other.x && this.y == other.y;
@@ -8,9 +8,12 @@ export class PipePosition extends Point implements GraphNodeKey {
 
 export class PipesGraph extends Graph {
   private start?: PipePosition;
-
-  constructor() {
+  private nRows: number;
+  private nCols: number;
+  constructor(nRows: number, nCols: number) {
     super();
+    this.nRows = nRows;
+    this.nCols = nCols;
   }
 
   setStart(start: PipePosition) {
@@ -33,5 +36,17 @@ export class PipesGraph extends Graph {
 
   calculateDistancesFromStart(): number {
     return this.getPath(this.start!).length / 2;
+  }
+
+  calculateInnerPoints(): number {
+    const path: PipePosition[] = this.getPath(this.start!);
+    let innerPoints = 0;
+
+    for (let i = 0; i < this.nRows; i++) {
+      for (let j = 0; j < this.nCols; j++) {
+        rayCasting(new PipePosition(i, j), path) && innerPoints++;
+      }
+    }
+    return innerPoints - path.length;
   }
 }
