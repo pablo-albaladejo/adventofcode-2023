@@ -6,6 +6,9 @@ export class Point {
     this.x = x;
     this.y = y;
   }
+  equals(other: Point) {
+    return this.x == other.x && this.y == other.y;
+  }
 }
 
 export const rayCasting = (point: Point, polygon: Point[]): boolean => {

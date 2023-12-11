@@ -1,70 +1,95 @@
-import { Graph, GraphNode, GraphNodeKey } from '../../common/graph';
 import { Point } from '../../common/polygon';
 
-export class CosmosPosition extends Point implements GraphNodeKey {
-  equals(other: CosmosPosition) {
-    return this.x == other.x && this.y == other.y;
-  }
-}
-
-class CosmosEdge extends Point implements GraphNodeKey {
+export class CosmosEdge extends Point {
   private value: number;
-
-  constructor(x: number, y: number, value: number) {
-    super(x, y);
+  constructor(point: Point, value: number = 1) {
+    super(point.x, point.y);
     this.value = value;
   }
-
   getValue(): number {
     return this.value;
   }
-
-  equals(other: CosmosEdge): boolean {
-    return this.x == other.x && this.y == other.y;
+  setValue(value: number) {
+    this.value = value;
   }
 }
-export class CosmosNode extends GraphNode {
-  key: CosmosPosition;
+
+export class CosmosNode {
+  point: Point;
   edges: CosmosEdge[];
 
-  constructor(key: CosmosPosition, edges: CosmosEdge[]) {
-    super(key);
-    this.key = key;
-    this.edges = edges;
+  constructor(point: Point) {
+    this.point = point;
+    this.edges = [];
+  }
+
+  addEdge(edge: CosmosEdge) {
+    if (this.edges.some((item) => item.equals(edge))) return;
+    this.edges.push(edge);
   }
 }
+export class Cosmos {
+  private nodes: CosmosNode[];
 
-export class Cosmos extends Graph {
   private nRows: number;
   private nCols: number;
 
-  private spaceNodeKeys: CosmosPosition[];
-  private galaxyNodeKeys: CosmosPosition[];
+  private spaceNodeKeys: Point[];
+  private galaxyNodeKeys: Point[];
 
   constructor(nRows: number, nCols: number) {
-    super();
     this.nRows = nRows;
     this.nCols = nCols;
     this.spaceNodeKeys = [];
     this.galaxyNodeKeys = [];
+    this.nodes = [];
+  }
+
+  getNode(source: Point): CosmosNode | undefined {
+    for (const node of this.nodes) {
+      if (node.point.equals(source)) {
+        return node;
+      }
+    }
+    return undefined;
+  }
+
+  addNode(node: CosmosNode) {
+    this.nodes.push(node);
+  }
+
+  protected getNodeOrCreate(key: Point): CosmosNode {
+    let node = this.getNode(key);
+    if (node) return node;
+
+    node = new CosmosNode(key);
+    this.addNode(node);
+    return node;
+  }
+
+  private addEdgeBidirectional(source: CosmosEdge, destination: CosmosEdge) {
+    this.getNodeOrCreate(source).addEdge(destination);
+    this.getNodeOrCreate(destination).addEdge(source);
   }
 
   private addCosmosNode(
-    postion: CosmosPosition,
-    destinations: CosmosPosition[],
-    cosmosArr: CosmosPosition[]
+    postion: Point,
+    destinations: Point[],
+    cosmosArr: Point[]
   ) {
     destinations.forEach((destination) => {
-      this.addEdgeBidirectional(postion, destination);
+      const edge1 = new CosmosEdge(postion);
+      const edge2 = new CosmosEdge(destination);
+      this.addEdgeBidirectional(edge1, edge2);
     });
     cosmosArr.push(postion);
   }
 
-  addGalaxyNode(postion: CosmosPosition, destinations: CosmosPosition[]) {
+  addGalaxyNode(postion: Point, destinations: Point[]) {
     this.addCosmosNode(postion, destinations, this.galaxyNodeKeys);
   }
 
-  addSpaceNode(postion: CosmosPosition, destinations: CosmosPosition[]) {
+  addSpaceNode(postion: Point, destinations: Point[]) {
     this.addCosmosNode(postion, destinations, this.spaceNodeKeys);
   }
 
@@ -79,18 +104,18 @@ export class Cosmos extends Graph {
     return this.nRows;
   }
 
-  getSpaceNodeKeys(): CosmosPosition[] {
+  getSpaceNodeKeys(): Point[] {
     return this.spaceNodeKeys;
   }
-  getGalaxyNodeKeys(): CosmosPosition[] {
+  getGalaxyNodeKeys(): Point[] {
     return this.galaxyNodeKeys;
   }
 
-  getGalaxyPairs(): [CosmosPosition, CosmosPosition][] {
+  getGalaxyPairs(): [Point, Point][] {
     return this.getPairs(this.galaxyNodeKeys);
   }
-  getPairs(cosmosArray: CosmosPosition[]) {
-    const pairs: [CosmosPosition, CosmosPosition][] = [];
+  getPairs(cosmosArray: Point[]) {
+    const pairs: [Point, Point][] = [];
 
     for (let i = 0; i < cosmosArray.length - 1; i++) {
       for (let j = i + 1; j < cosmosArray.length; j++) {
