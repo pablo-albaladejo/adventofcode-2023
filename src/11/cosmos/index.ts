@@ -9,14 +9,17 @@ export class CosmosEdge extends Point {
   getValue(): number {
     return this.value;
   }
+  increaseValue(inc: number = 1): void {
+    this.value += inc;
+  }
   setValue(value: number) {
     this.value = value;
   }
 }
 
 export class CosmosNode {
-  point: Point;
-  edges: CosmosEdge[];
+  private point: Point;
+  private edges: CosmosEdge[];
 
   constructor(point: Point) {
     this.point = point;
@@ -26,6 +29,16 @@ export class CosmosNode {
   addEdge(edge: CosmosEdge) {
     if (this.edges.some((item) => item.equals(edge))) return;
     this.edges.push(edge);
+  }
+  getEdgeTo(point: Point): CosmosEdge | undefined {
+    return this.edges.find((item) => item.equals(point));
+  }
+  getPoint(): Point {
+    return this.point;
+  }
+
+  getEdgeToPoint(point: Point): CosmosEdge | undefined {
+    return this.edges.find((item) => item.equals(point));
   }
 }
 export class Cosmos {
@@ -47,7 +60,7 @@ export class Cosmos {
 
   getNode(source: Point): CosmosNode | undefined {
     for (const node of this.nodes) {
-      if (node.point.equals(source)) {
+      if (node.getPoint().equals(source)) {
         return node;
       }
     }
@@ -67,9 +80,11 @@ export class Cosmos {
     return node;
   }
 
-  private addEdgeBidirectional(source: CosmosEdge, destination: CosmosEdge) {
-    this.getNodeOrCreate(source).addEdge(destination);
-    this.getNodeOrCreate(destination).addEdge(source);
+  private addEdgeBidirectional(source: Point, destination: Point) {
+    const edge1 = new CosmosEdge(source);
+    const edge2 = new CosmosEdge(destination);
+    this.getNodeOrCreate(source).addEdge(edge2);
+    this.getNodeOrCreate(destination).addEdge(edge1);
   }
 
   private addCosmosNode(
@@ -78,9 +93,7 @@ export class Cosmos {
     cosmosArr: Point[]
   ) {
     destinations.forEach((destination) => {
-      const edge1 = new CosmosEdge(postion);
-      const edge2 = new CosmosEdge(destination);
-      this.addEdgeBidirectional(edge1, edge2);
+      this.addEdgeBidirectional(postion, destination);
     });
     cosmosArr.push(postion);
   }
@@ -111,9 +124,6 @@ export class Cosmos {
     return this.galaxyNodeKeys;
   }
 
-  getGalaxyPairs(): [Point, Point][] {
-    return this.getPairs(this.galaxyNodeKeys);
-  }
   getPairs(cosmosArray: Point[]) {
     const pairs: [Point, Point][] = [];
 
@@ -124,5 +134,59 @@ export class Cosmos {
     }
 
     return pairs;
+  }
+
+  getGalaxyPairs(): [Point, Point][] {
+    return this.getPairs(this.galaxyNodeKeys);
+  }
+
+  emptyRowsAndColumns(): { rows: number[]; columns: number[] } {
+    const rows = Array.from({ length: this.nRows }, (_, index) => index);
+    const columns = Array.from({ length: this.nCols }, (_, index) => index);
+
+    for (const point of this.galaxyNodeKeys) {
+      const xPos = rows.indexOf(point.x);
+      if (xPos >= 0) rows.splice(xPos, 1);
+
+      const yPos = columns.indexOf(point.y);
+      if (yPos >= 0) columns.splice(yPos, 1);
+    }
+
+    return { rows, columns };
+  }
+
+  expand() {
+    const { rows, columns } = this.emptyRowsAndColumns();
+    console.log(rows);
+    for (const row of rows) {
+      for (let i = 0; i < this.nCols; i++) {
+        const point = new Point(row, i);
+        if (row > 0) {
+          const above = new Point(row - 1, i);
+          this.getNode(above)?.getEdgeToPoint(point)?.increaseValue(1);
+          this.getNode(point)?.getEdgeToPoint(above)?.increaseValue(1);
+        }
+        if (row < this.nRows) {
+          const below = new Point(row + 1, i);
+          this.getNode(below)?.getEdgeToPoint(point)?.increaseValue(1);
+          this.getNode(point)?.getEdgeToPoint(below)?.increaseValue(1);
+        }
+      }
+    }
+    for (const column of columns) {
+      for (let i = 0; i < this.nCols; i++) {
+        const point = new Point(i, column);
+        if (i > column) {
+          const left = new Point(i, column - 1);
+          this.getNode(left)?.getEdgeToPoint(point)?.increaseValue(1);
+          this.getNode(point)?.getEdgeToPoint(left)?.increaseValue(1);
+        }
+        if (column < this.nCols) {
+          const right = new Point(i, column + 1);
+          this.getNode(right)?.getEdgeToPoint(point)?.increaseValue(1);
+          this.getNode(point)?.getEdgeToPoint(right)?.increaseValue(1);
+        }
+      }
+    }
   }
 }
