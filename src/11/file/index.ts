@@ -9,22 +9,15 @@ export const loadCosmos = (filePath: string): Cosmos => {
   for (let i = 0; i < lines.length; i++) {
     for (let j = 0; j < lines[i].length; j++) {
       const neighbors = [];
-      if (i > 0 && j > 0) neighbors.push(new Point(i - 1, j - 1)); // Upper left neighbor
       if (i > 0) neighbors.push(new Point(i - 1, j)); // Upper neighbor
-      if (i > 0 && j < lines[i].length - 1)
-        neighbors.push(new Point(i - 1, j + 1)); // Upper right neighbor
       if (j > 0) neighbors.push(new Point(i, j - 1)); // Left neighbor
       if (j < lines[i].length - 1) neighbors.push(new Point(i, j + 1)); // Right neighbor
-      if (i < lines.length - 1 && j > 0)
-        neighbors.push(new Point(i + 1, j - 1)); // Lower left neighbor
       if (i < lines.length - 1) neighbors.push(new Point(i + 1, j)); // Lower neighbor
-      if (i < lines.length - 1 && j < lines[i].length - 1)
-        neighbors.push(new Point(i + 1, j + 1)); // Lower right neighbor
 
       if (lines[i][j] === '#') {
-        cosmos.addGalaxyNode(new Point(i, j), neighbors);
+        cosmos.addGalaxyVertex(new Point(i, j), neighbors);
       } else {
-        cosmos.addSpaceNode(new Point(i, j), neighbors);
+        cosmos.addSpaceVertex(new Point(i, j), neighbors);
       }
     }
   }

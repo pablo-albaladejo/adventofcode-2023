@@ -1,4 +1,4 @@
-import { Graph, GraphNode, GraphNodeKey } from '../../common/graph';
+import { Graph, GraphNode, GraphNodeKey } from '../common';
 import { Point, rayCasting } from '../../common/polygon';
 export class PipePosition extends Point implements GraphNodeKey {
   equals(other: PipePosition) {

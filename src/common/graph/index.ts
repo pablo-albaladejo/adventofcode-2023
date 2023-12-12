@@ -1,140 +1,181 @@
-export abstract class GraphNodeKey {
-  abstract equals(other: GraphNodeKey): boolean;
+import { PriorityQueue } from '../queue/priority-queue';
+
+interface Equatable {
+  equals(other: any): boolean;
 }
 
-export class GraphNode {
-  key: GraphNodeKey;
-  edges: GraphNodeKey[];
+type HashKey = string | number;
 
-  constructor(key: GraphNodeKey) {
-    this.key = key;
+abstract class Hashable {
+  abstract getKey(): HashKey;
+
+  // DJB2
+  hashCode(): number {
+    const str = JSON.stringify(this);
+    let hash = 5381;
+
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash * 33) ^ char;
+    }
+    return hash >>> 0;
+  }
+}
+
+export class Edge extends Hashable {
+  private key: HashKey;
+  private origin: HashKey;
+  private destination: HashKey;
+  private weight: number;
+
+  constructor(origin: HashKey, destination: HashKey, weight: number) {
+    super();
+    this.origin = origin;
+    this.destination = destination;
+    this.weight = weight;
+    this.key = this.hashCode();
+  }
+
+  getKey(): HashKey {
+    return this.key;
+  }
+
+  equals(obj: any): boolean {
+    return obj.toString() === this.toString();
+  }
+
+  toString(): string {
+    return `Edge(${this.origin}, ${this.destination}, ${this.weight})`;
+  }
+
+  getOrigin(): HashKey {
+    return this.origin;
+  }
+
+  setOrigin(origin: HashKey): void {
+    this.origin = origin;
+  }
+
+  getDestination(): HashKey {
+    return this.destination;
+  }
+
+  setDestination(destination: HashKey): void {
+    this.destination = destination;
+  }
+
+  getWeight(): number {
+    return this.weight;
+  }
+
+  setWeight(weight: number): void {
+    this.weight = weight;
+  }
+}
+
+export class Vertex<T extends Equatable> extends Hashable {
+  private key: HashKey;
+  private element: T;
+
+  constructor(element: T) {
+    super();
+    this.element = element;
+    this.key = this.hashCode();
+  }
+  getKey(): HashKey {
+    return this.key;
+  }
+  getElement(): T {
+    return this.element;
+  }
+}
+export class Graph<T extends Equatable> {
+  protected vertices: Vertex<T>[];
+  protected edges: Edge[];
+
+  constructor() {
+    this.vertices = [];
     this.edges = [];
   }
 
-  addEdge(key: GraphNodeKey) {
-    if (this.edges.some((edge) => edge.equals(key))) return;
-    this.edges.push(key);
+  getVertexByKey(key: HashKey): Vertex<T> | undefined {
+    return this.vertices.find((item) => item.getKey() === key);
   }
-}
-
-export class Graph {
-  protected nodes: GraphNode[];
-
-  constructor() {
-    this.nodes = [];
+  getVertexByElement(element: T): Vertex<T> | undefined {
+    return this.vertices.find((item) => item.getElement().equals(element));
   }
 
-  protected getNodeOrCreate(key: GraphNodeKey): GraphNode {
-    let node = this.getNode(key);
-    if (node) return node;
-
-    node = new GraphNode(key);
-    this.addNode(node);
-    return node;
+  addVertex(vertex: Vertex<T>) {
+    this.vertices.push(vertex);
   }
 
-  protected removeNode(key: GraphNodeKey) {
-    this.nodes = this.nodes.filter((node) => !node.key.equals(key));
-    this.nodes.forEach((node) => {
-      node.edges = node.edges.filter((edge) => !edge.equals(key));
-    });
+  getVertices(): Vertex<T>[] {
+    return this.vertices;
   }
 
-  protected removeNodes(keys: GraphNodeKey[]) {
-    keys.forEach((key) => this.removeNode(key));
+  getEdges(): Edge[] {
+    return this.edges;
   }
-
-  protected dfsVisitedRecursive(v: GraphNodeKey, visited: GraphNodeKey[]) {
-    visited.push(v);
-    const node = this.getNode(v);
-
-    if (node) {
-      for (const neighbor of node.edges) {
-        if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
-          this.dfsVisitedRecursive(neighbor, visited);
-        }
-      }
+  getEdge(origin: HashKey, destination: HashKey): Edge | undefined {
+    return this.edges.find(
+      (edge) =>
+        edge.getOrigin() === origin && edge.getDestination() === destination
+    );
+  }
+  addEdge(edge: Edge) {
+    this.edges.push(edge);
+  }
+  addUniqueEdge(edge: Edge) {
+    if (!this.getEdge(edge.getOrigin(), edge.getDestination())) {
+      this.addEdge(edge);
     }
   }
 
-  protected dfsVisited(v: GraphNodeKey, visited: GraphNodeKey[]) {
-    const stack: GraphNodeKey[] = [];
-    stack.push(v);
-  
-    while (stack.length > 0) {
-      const currentKey = stack.pop()!;
-      const currentNode = this.getNode(currentKey);
-  
-      if (currentNode && !visited.some((visitedNode) => visitedNode.equals(currentKey))) {
-        visited.push(currentKey);
-  
-        for (const neighbor of currentNode.edges) {
-          if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
-            stack.push(neighbor);
-          }
-        }
-      }
+  dijkstra(start: Vertex<T>, end: Vertex<T>): Edge[] | undefined {
+    const visited: Set<HashKey> = new Set();
+    const distances: Map<HashKey, number> = new Map();
+    const previous: Map<HashKey, Edge | undefined> = new Map();
+    const queue = new PriorityQueue<Vertex<T>>();
+
+    for (const vertex of this.vertices) {
+      distances.set(vertex.getKey(), Infinity);
+      previous.set(vertex.getKey(), undefined);
     }
-  }
+    distances.set(start.getKey(), 0);
+    queue.enqueue(start, 0);
 
-  protected bfsWithMaxDepth(startNodeKey: GraphNodeKey): number {
-    const visited: GraphNodeKey[] = [];
-    const queue: { nodeKey: GraphNodeKey; depth: number }[] = [];
+    while (!queue.isEmpty()) {
+      const current = queue.dequeue()!;
 
-    queue.push({ nodeKey: startNodeKey, depth: 0 });
-    visited.push(startNodeKey);
-    let maxDepth = 0;
+      if (visited.has(current.getKey())) continue;
+      visited.add(current.getKey());
 
-    while (queue.length > 0) {
-      const { nodeKey, depth } = queue.shift()!;
-      const currentNode = this.getNode(nodeKey);
+      const neighborEdges = this.getEdges().filter(
+        (edge) => edge.getOrigin() === current.getKey()
+      );
 
-      if (currentNode) {
-        maxDepth = Math.max(maxDepth, depth);
+      for (const neighborEdge of neighborEdges) {
+        const neighbor = this.getVertexByKey(neighborEdge.getDestination())!;
+        const newDistance =
+          distances.get(current.getKey())! + neighborEdge.getWeight();
 
-        for (const neighbor of currentNode.edges) {
-          if (!visited.some((visitedNode) => visitedNode.equals(neighbor))) {
-            visited.push(neighbor);
-
-            queue.push({ nodeKey: neighbor, depth: depth + 1 });
-          }
+        if (newDistance < distances.get(neighbor.getKey())!) {
+          distances.set(neighbor.getKey(), newDistance);
+          previous.set(neighbor.getKey(), neighborEdge);
+          queue.enqueue(neighbor, newDistance);
         }
       }
     }
 
-    return maxDepth;
-  }
+    const path: Edge[] = [];
+    let current = end;
 
-  addNode(node: GraphNode) {
-    this.nodes.push(node);
-  }
-
-  addEdge(source: GraphNodeKey, destination: GraphNodeKey) {
-    this.getNodeOrCreate(source).addEdge(destination);
-  }
-
-  addEdgeBidirectional(source: GraphNodeKey, destination: GraphNodeKey) {
-    this.getNodeOrCreate(source).addEdge(destination);
-    this.getNodeOrCreate(destination).addEdge(source);
-  }
-
-  getNode(key: GraphNodeKey): GraphNode | undefined {
-    for (const node of this.nodes) {
-      if (node.key.equals(key)) {
-        return node;
-      }
+    while (previous.get(current.getKey())) {
+      const edge = previous.get(current.getKey())!;
+      path.unshift(edge);
+      current = this.getVertexByKey(edge.getOrigin())!;
     }
-    return undefined;
-  }
 
-  removeUnconnected(startNodeKey: GraphNodeKey) {
-    const visited: GraphNodeKey[] = [];
-    this.dfsVisited(startNodeKey, visited);
-
-    for (const node of this.nodes) {
-      if (!visited.some((visitedNode) => visitedNode.equals(node.key))) {
-        this.removeNode(node.key);
-      }
-    }
+    return path.length > 0 ? path : undefined;
   }
 }

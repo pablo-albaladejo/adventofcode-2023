@@ -1,113 +1,19 @@
+import { Edge, Graph, Vertex } from '../../common/graph';
+import { getPairs } from '../../common/helpers';
 import { Point } from '../../common/polygon';
-
-export class CosmosEdge extends Point {
-  private value: number;
-  constructor(point: Point, value: number = 1) {
-    super(point.x, point.y);
-    this.value = value;
-  }
-  getValue(): number {
-    return this.value;
-  }
-  increaseValue(inc: number = 1): void {
-    this.value += inc;
-  }
-  setValue(value: number) {
-    this.value = value;
-  }
-}
-
-export class CosmosNode {
-  private point: Point;
-  private edges: CosmosEdge[];
-
-  constructor(point: Point) {
-    this.point = point;
-    this.edges = [];
-  }
-
-  addEdge(edge: CosmosEdge) {
-    if (this.edges.some((item) => item.equals(edge))) return;
-    this.edges.push(edge);
-  }
-  getEdgeTo(point: Point): CosmosEdge | undefined {
-    return this.edges.find((item) => item.equals(point));
-  }
-  getPoint(): Point {
-    return this.point;
-  }
-
-  getEdgeToPoint(point: Point): CosmosEdge | undefined {
-    return this.edges.find((item) => item.equals(point));
-  }
-}
-export class Cosmos {
-  private nodes: CosmosNode[];
-
+export class Cosmos extends Graph<Point> {
   private nRows: number;
   private nCols: number;
 
-  private spaceNodeKeys: Point[];
-  private galaxyNodeKeys: Point[];
+  private spacePoints: Point[];
+  private galaxyPoints: Point[];
 
   constructor(nRows: number, nCols: number) {
+    super();
     this.nRows = nRows;
     this.nCols = nCols;
-    this.spaceNodeKeys = [];
-    this.galaxyNodeKeys = [];
-    this.nodes = [];
-  }
-
-  getNode(source: Point): CosmosNode | undefined {
-    for (const node of this.nodes) {
-      if (node.getPoint().equals(source)) {
-        return node;
-      }
-    }
-    return undefined;
-  }
-
-  addNode(node: CosmosNode) {
-    this.nodes.push(node);
-  }
-
-  protected getNodeOrCreate(key: Point): CosmosNode {
-    let node = this.getNode(key);
-    if (node) return node;
-
-    node = new CosmosNode(key);
-    this.addNode(node);
-    return node;
-  }
-
-  private addEdgeBidirectional(source: Point, destination: Point) {
-    const edge1 = new CosmosEdge(source);
-    const edge2 = new CosmosEdge(destination);
-    this.getNodeOrCreate(source).addEdge(edge2);
-    this.getNodeOrCreate(destination).addEdge(edge1);
-  }
-
-  private addCosmosNode(
-    postion: Point,
-    destinations: Point[],
-    cosmosArr: Point[]
-  ) {
-    destinations.forEach((destination) => {
-      this.addEdgeBidirectional(postion, destination);
-    });
-    cosmosArr.push(postion);
-  }
-
-  addGalaxyNode(postion: Point, destinations: Point[]) {
-    this.addCosmosNode(postion, destinations, this.galaxyNodeKeys);
-  }
-
-  addSpaceNode(postion: Point, destinations: Point[]) {
-    this.addCosmosNode(postion, destinations, this.spaceNodeKeys);
-  }
-
-  getNNodes(): number {
-    return this.nodes.length;
+    this.spacePoints = [];
+    this.galaxyPoints = [];
   }
 
   getNCols(): number {
@@ -117,34 +23,62 @@ export class Cosmos {
     return this.nRows;
   }
 
-  getSpaceNodeKeys(): Point[] {
-    return this.spaceNodeKeys;
-  }
-  getGalaxyNodeKeys(): Point[] {
-    return this.galaxyNodeKeys;
+  getNVertex(): number {
+    return this.vertices.length;
   }
 
-  getPairs(cosmosArray: Point[]) {
-    const pairs: [Point, Point][] = [];
+  getSpacePoints(): Point[] {
+    return this.spacePoints;
+  }
+  getGalaxyPoints(): Point[] {
+    return this.galaxyPoints;
+  }
 
-    for (let i = 0; i < cosmosArray.length - 1; i++) {
-      for (let j = i + 1; j < cosmosArray.length; j++) {
-        pairs.push([cosmosArray[i], cosmosArray[j]]);
-      }
-    }
+  private geVertexOrCreate(point: Point): Vertex<Point> {
+    let vertex = this.getVertexByElement(point);
+    if (vertex) return vertex;
 
-    return pairs;
+    vertex = new Vertex(point);
+    this.addVertex(vertex);
+    return vertex;
+  }
+
+  private addCosmosVertex(
+    source: Point,
+    destinations: Point[],
+    cosmosArr: Point[]
+  ) {
+    const sourceVertex = this.geVertexOrCreate(source);
+    destinations.forEach((destination) => {
+      const destinationVertex = this.geVertexOrCreate(destination);
+
+      this.addUniqueEdge(
+        new Edge(sourceVertex.getKey(), destinationVertex.getKey(), 1)
+      );
+      this.addUniqueEdge(
+        new Edge(destinationVertex.getKey(), sourceVertex.getKey(), 1)
+      );
+    });
+    cosmosArr.push(source);
+  }
+
+  addGalaxyVertex(postion: Point, destinations: Point[]) {
+    this.addCosmosVertex(postion, destinations, this.galaxyPoints);
+  }
+
+  addSpaceVertex(postion: Point, destinations: Point[]) {
+    this.addCosmosVertex(postion, destinations, this.spacePoints);
   }
 
   getGalaxyPairs(): [Point, Point][] {
-    return this.getPairs(this.galaxyNodeKeys);
+    return getPairs(this.galaxyPoints);
   }
 
   emptyRowsAndColumns(): { rows: number[]; columns: number[] } {
     const rows = Array.from({ length: this.nRows }, (_, index) => index);
     const columns = Array.from({ length: this.nCols }, (_, index) => index);
 
-    for (const point of this.galaxyNodeKeys) {
+    for (const point of this.galaxyPoints) {
       const xPos = rows.indexOf(point.x);
       if (xPos >= 0) rows.splice(xPos, 1);
 
@@ -155,38 +89,46 @@ export class Cosmos {
     return { rows, columns };
   }
 
+  private updateEdgeWeigth(source: Point, destination: Point) {
+    const v1 = this.getVertexByElement(source)!;
+    const v2 = this.getVertexByElement(destination)!;
+
+    const edge1 = this.getEdge(v1.getKey(), v2.getKey());
+    edge1?.setWeight(edge1.getWeight() + 1);
+
+    const edge2 = this.getEdge(v2.getKey(), v1.getKey());
+    edge2?.setWeight(edge2.getWeight() + 1);
+  }
+
   expand() {
     const { rows, columns } = this.emptyRowsAndColumns();
-    console.log(rows);
     for (const row of rows) {
       for (let i = 0; i < this.nCols; i++) {
         const point = new Point(row, i);
-        if (row > 0) {
-          const above = new Point(row - 1, i);
-          this.getNode(above)?.getEdgeToPoint(point)?.increaseValue(1);
-          this.getNode(point)?.getEdgeToPoint(above)?.increaseValue(1);
-        }
         if (row < this.nRows) {
           const below = new Point(row + 1, i);
-          this.getNode(below)?.getEdgeToPoint(point)?.increaseValue(1);
-          this.getNode(point)?.getEdgeToPoint(below)?.increaseValue(1);
+          this.updateEdgeWeigth(below, point);
         }
       }
     }
     for (const column of columns) {
       for (let i = 0; i < this.nCols; i++) {
         const point = new Point(i, column);
-        if (i > column) {
-          const left = new Point(i, column - 1);
-          this.getNode(left)?.getEdgeToPoint(point)?.increaseValue(1);
-          this.getNode(point)?.getEdgeToPoint(left)?.increaseValue(1);
-        }
         if (column < this.nCols) {
           const right = new Point(i, column + 1);
-          this.getNode(right)?.getEdgeToPoint(point)?.increaseValue(1);
-          this.getNode(point)?.getEdgeToPoint(right)?.increaseValue(1);
+          this.updateEdgeWeigth(right, point);
         }
       }
     }
+  }
+
+  shortestPath(a: Point, b: Point): number | undefined {
+    const source = this.getVertexByElement(a);
+    const destination = this.getVertexByElement(b);
+    if (!source || !destination) return undefined;
+
+    const path = this.dijkstra(source, destination);
+    if (!path) return undefined;
+    return path?.reduce((acc, edge) => acc + edge.getWeight(), 0);
   }
 }

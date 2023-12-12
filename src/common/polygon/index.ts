@@ -9,6 +9,18 @@ export class Point {
   equals(other: Point) {
     return this.x == other.x && this.y == other.y;
   }
+
+  // DJB2
+  hashCode(): number {
+    const str = `${this.x}-${this.y}`;
+    let hash = 5381;
+
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash * 33) ^ char;
+    }
+    return hash >>> 0;
+  }
 }
 
 export const rayCasting = (point: Point, polygon: Point[]): boolean => {
